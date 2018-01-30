@@ -7,10 +7,10 @@
 	if (!$_GET['mod']){
 		if($_SESSION['login']){
 			$mod="lista_func";
-		}else{ 
+		}else{
 			$mod="login";
 		}
-	}else{ 
+	}else{
 		$mod=$_GET['mod'];
 	}
 ?>
@@ -62,9 +62,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   |               | sidebar-mini                            |
   |---------------------------------------------------------|
   -->
- 
-	
-	
+
+
+
 	<div class="wrapper">
 		<?php
 			//verifica se os ficheiros que estão a ser chamados existem
@@ -112,15 +112,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						<!-- Content Header (Page header) -->
 						<section class='content-header'>
 						  <h1>";
-							
+
 							if($mod=='lista_func'){
-								echo"<i class='fa fa-list'></i> Lista de Funcionários";								
+								echo"<i class='fa fa-list'></i> Lista de Funcionários";
 							}else{
 								if($mod=='reg_user'){
-									echo"<i class='fa fa-user-plus'></i> Novo Utilizador";								
+									echo"<i class='fa fa-user-plus'></i> Novo Utilizador";
 								}else{
 									if($mod=='ano_letivo'){
-										echo"<i class='fa fa-calendar'></i> Gestão de Ano Letivo";								
+										echo"<i class='fa fa-calendar'></i> Gestão de Ano Letivo";
 									}else{
 										if($mod=='lista_users'){
 											echo"<i class='fa fa-user'></i> Lista de Utilizadores";
@@ -141,10 +141,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 																echo"<i class='fa fa-lock'></i> Nova Palavra-Passe";
 															}else{
 																if($mod=='func_filter'){
-																	echo"<i class='fa fa-list'></i> Filtro de Dados Profissionais";					
+																	echo"<i class='fa fa-list'></i> Filtro de Dados Profissionais";
 																}else{
 																	if($mod=='dados'){
-																		echo"<i class='fa fa-search'></i> Ficha de Dados";					
+																		echo"<i class='fa fa-search'></i> Ficha de Dados";
 																	}
 																}
 															}
@@ -156,7 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									}
 								}
 							}
-							
+
 						  echo "</h1>
 						</section>
 
@@ -168,7 +168,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							  }else{
 								echo " <body>";
 							  }
-							  
+
 							if ($_GET['m'] == 1) {
 								echo "
 								<div class='alert alert-danger alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
@@ -211,7 +211,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						} else {
 							echo "O ficheiro nao existe.";
 						}
-						
+
 						echo"
 						</section><!-- /.content -->
 					  </div><!-- /.content-wrapper -->
@@ -234,7 +234,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			}
 		?>
 	</div>
-	
+
    <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->

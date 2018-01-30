@@ -1,4 +1,4 @@
-<?php	
+<?php
 //if($_GET['search']==1){
 //	$_SESSION[nif]=$_POST[nif];
 //	$res = mysql_query("select * from dbo_tab_funcionarios where NIF = $_POST[nif]");
@@ -31,7 +31,7 @@ if($_GET['search']==3){
 }
 
 if($_GET['save']==1){
-	
+
 	if(!empty($_POST['COD_POSTAL'])){
 		$postcode = $_POST['COD_POSTAL'];
 		$codechunks = explode("-", $postcode);
@@ -59,11 +59,11 @@ if($_GET['save']==1){
 	$BANCO = utf8_decode($_POST[BANCO]);
 	$COD_RECRUTAMENTO = utf8_decode($_POST[COD_RECRUTAMENTO]);
 	$ESCOLA_TITULAR = utf8_decode($_POST[ESCOLA]);
-	
+
 	$date_regex = "/[0-9]{2}\-[0-9]{2}\-[0-9]{4}/";
 	if ((preg_match($date_regex, $_POST[DATA_NASC], $teste))==false) {
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=pessoal_2&search=2&m=3'>";
-	}	
+	}
 	if ((preg_match($date_regex, $_POST[DATA_VALIDADE], $teste))==false) {
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=pessoal_2&search=2&m=3'>";
 	}
@@ -76,7 +76,7 @@ if($_GET['save']==1){
 	$DATA_VALIDADE = $myDateTime2->format('Y-m-d');
 	$myDateTime3 = DateTime::createFromFormat('d-m-Y', $_POST[INICIO_FUNCOES]);
 	$INICIO_FUNCOES = $myDateTime3->format('Y-m-d');
-	
+
 	if($num>0){
 		//2º Caso isso se confirme, o registo é alterado onde com base no nif
 		$res2 = mysql_query("UPDATE dbo_tab_funcionarios SET DATA_UPDATE=CURDATE(), COD_POSTAL='$codechunks[0]', IND_CODPOSTAL='$codechunks[1]',NOME_COMP='$NOME_COMP', NUM_FUNCIONARIO=$_POST[NUM_FUNCIONARIO], CGA='$CGA', MORADA='$MORADA', LOCALIDADE = '$LOCALIDADE', DESTRITO='$DESTRITO', ID_MUNICIPIO='$_POST[MUNICIPIO]', FREGUESIA='$FREGUESIA', DATA_NASC='$DATA_NASC', TEL='$TEL', TLM='$TLM', EMAIL='$EMAIL', ID_ESTADO_CIVIL='$_POST[EST_CIVIL]', NUM_DEPENDENTES=$_POST[NUM_DEPENDENTES], BI='$BI', DATA_VALIDADE='$DATA_VALIDADE', NISS='$NISS', ADSE='$ADSE', NIB='$NIB', BANCO='$BANCO', ID_HABLITERARIA='$_POST[HABLITERARIA]', ID_CATEGORIA='$_POST[CATEGORIA]', INICIO_FUNCOES='$INICIO_FUNCOES', COD_RECRUTAMENTO='$COD_RECRUTAMENTO', ID_SITUACAO='$_POST[SITUACAO_PROF]', ID_ESCOLA_TITULAR='$_POST[lista]',ID_TIPO_FUNC=1, ESCOLA_TITULAR='$ESCOLA_TITULAR' WHERE NIF = $_SESSION[nif]");
@@ -84,12 +84,12 @@ if($_GET['save']==1){
 	}else{
 		//3º Senão, é criado um novo registo.
 		$res3 = mysql_query("INSERT INTO dbo_tab_funcionarios(NIF, DATA_REG, DATA_UPDATE, NUM_FUNCIONARIO, NOME_COMP, MORADA, COD_POSTAL, IND_CODPOSTAL, LOCALIDADE, DESTRITO, ID_MUNICIPIO, FREGUESIA, BANCO, ID_ESCOLA_TITULAR, COD_RECRUTAMENTO, INICIO_FUNCOES, TEL, TLM, EMAIL, DATA_NASC, ID_ESTADO_CIVIL, ID_SITUACAO, ID_HABLITERARIA, ID_CATEGORIA, BI, DATA_VALIDADE, NIB, NISS, ADSE, CGA, NUM_DEPENDENTES, ID_TIPO_FUNC, ESCOLA_TITULAR, ENVIADO, PASSWORD) VALUES ($_SESSION[nif], CURDATE(), CURDATE(), $_POST[NUM_FUNCIONARIO], '$NOME_COMP', '$MORADA', '$codechunks[0]', '$codechunks[1]', '$LOCALIDADE', '$DESTRITO', '$_POST[MUNICIPIO]', '$FREGUESIA', '$BANCO', '$_POST[lista]', '$COD_RECRUTAMENTO', '$INICIO_FUNCOES', '$TEL', '$TLM', '$EMAIL', '$DATA_NASC', '$_POST[EST_CIVIL]', '$_POST[SITUACAO_PROF]', '$_POST[HABLITERARIA]', '$_POST[CATEGORIA]', '$BI', '$DATA_VALIDADE', '$NIB', '$NISS', '$ADSE', '$CGA', $_POST[NUM_DEPENDENTES], 1, '$ESCOLA_TITULAR', 0, '')");
-		
+
 		function enviar_mail(){
-			
+
 			$res = mysql_query("select * from dbo_tab_funcionarios where NIF = $_SESSION[nif]");
 			$row = mysql_fetch_object($res);
-			
+
 			function random($length) {
 				$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 				$ref = substr( str_shuffle( $chars ), 0, $length );
@@ -99,35 +99,35 @@ if($_GET['save']==1){
 				$name = random(5);
 				return $name;
 			}
-			
+
 			$pass = give_name();
-			
+
 			$update = mysql_query("UPDATE dbo_tab_funcionarios SET PASSWORD='$pass' WHERE NIF = $_SESSION[nif]");
-			
-			$to      = $row->EMAIL; 
+
+			$to      = $row->EMAIL;
 			$subject = 'Palavra-passe de acesso ao sistema';
-			
+
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html' . "\r\n";		
+			$headers .= 'Content-type: text/html' . "\r\n";
 			$headers .= 'From: DSEAM <informatica.dseam@gmail.com>'."\r\n".
 				'Reply-To: JP <al213022@epcc.pt>'."\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-			
-			$message = '<html><body>';	
+
+			$message = '<html><body>';
 				$message .= '<p style="line-height: 190%">';
 					$message .= 'Caro(a) ' . $row->NOME_COMP . ',<br> Os seus dados de acesso são os seguintes: ';
 					$message .= '<br><b>NIF: </b>' . $row->NIF . '<br>';
-					$message .= '<b>Palavra-passe: ' . $pass . '</b><br><br>';	
+					$message .= '<b>Palavra-passe: ' . $pass . '</b><br><br>';
 					$message .= 'Poderá alterar a sua palavra-passe na opção "Alterar Palavra-Passe".<br>';
 					$message .= 'Cumprimentos,<br> DSEAM';
 			$message .= '</body></html>';
 
-			mail($to, $subject, $message, $headers);	
+			mail($to, $subject, $message, $headers);
 		}
 		enviar_mail();
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
 	}
-	
+
 }
 
 echo"
@@ -168,7 +168,7 @@ echo"
 					}else{
 						echo"<input class='form-control' value='$row->COD_POSTAL-$row->IND_CODPOSTAL' name='COD_POSTAL' required>";
 					}
-						
+
 				echo"
 				</div>
 				<!-- LOCALIDADE -->
@@ -207,7 +207,7 @@ echo"
 					<input class='form-control' value='".utf8_encode($row->FREGUESIA)."' name='FREGUESIA' required>
 				</div>
 				<!-- DATA DE NASCIMENTO -->
-				<div class='col-md-3'> 
+				<div class='col-md-3'>
 					<strong>Data Nascimento*</strong>";
 					$DATA_NASC = $row->DATA_NASC;
 					if(($DATA_NASC=='0000-00-00') || !isset($row->DATA_NASC)){
@@ -380,7 +380,7 @@ echo"
 						}else{
 							echo"<option value='$row2->ID_LISTA_ESCOLAS'>".utf8_encode($row2->NOME_ESCOLA)."</option>";
 						}
-						
+
 					}
 					mysql_free_result($res);
 					echo"
@@ -393,16 +393,16 @@ echo"
 			</div>
 		</div>
 		<div class='panel-footer clearfix'>
-			<button type='submit' name='submit' class='btn btn-primary pull-right'> 
+			<button type='submit' name='submit' class='btn btn-primary pull-right'>
 				<span class='glyphicon glyphicon-floppy-disk' aria-hidden='true'></span>
 				Guardar e Continuar
 				<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>
 			</button>
-			<a href='index.php?mod=pessoal' class='btn btn-default pull-right' style='margin-right: 10px;'> 
+			<a href='index.php?mod=pessoal' class='btn btn-default pull-right' style='margin-right: 10px;'>
 				<span class='glyphicon glyphicon-menu-left' aria-hidden='true'></span>
 				Voltar
 			</a>
-			<a href='index.php?mod=change_pass' class='btn btn-default'> 
+			<a href='index.php?mod=change_pass' class='btn btn-default'>
 				<span class='glyphicon glyphicon-lock' aria-hidden='true'></span>
 				Alterar Palavra-passe
 			</a>
@@ -425,13 +425,13 @@ $( document ).ready(function() {
 		if($('#lista').val() != 209){
 			$("#outra_escola_campo").prop('disabled', true);
 			$("#outra_escola_campo").val("");
-			
+
 		}else{
 			$("#outra_escola_campo").prop('disabled', false);
 		}
 		return false;
 	});
-	
+
 	onlyNum($("#num_func"));
 	onlyNum($("#cga"));
 	onlyNum($("#tel"));
