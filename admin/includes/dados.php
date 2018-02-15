@@ -1,65 +1,61 @@
 <div class="row">
 	<div class="col-xs-12">
 	  <div class="box">
-		<div class="box-body">
-		  
-		 <?php
-		 //$res1111 = mysql_query("select * from dbo_tab_funcionarios where ID_FUNCIONARIO = $_GET[id]");
-		 //$row2222 = mysql_fetch_object($res1111);
-		 //echo utf8_encode($row2222->NOME_COMP) . "<br>" . utf8_encode($row2222->MORADA); 
-		 
-		function mostrar_dados(){
-			$res = mysql_query("select * from dbo_tab_funcionarios where ID_FUNCIONARIO = $_GET[id]");
-			$row = mysql_fetch_object($res);
+			<div class="box-body">
 
-			$emails = mysql_query("select EMAIL from dbo_tab_utilizadores where EMAIL_COMPLETO = 1");
-			while($row2 = mysql_fetch_object($emails)){
-				$to      .= $row2->EMAIL . ","; 
-			}
-			
+			<?php
+			function mostrar_dados(){
+				$res = mysql_query("select * from dbo_tab_funcionarios where ID_FUNCIONARIO = $_GET[id]");
+				$row = mysql_fetch_object($res);
+
+				$emails = mysql_query("select EMAIL from dbo_tab_utilizadores where EMAIL_COMPLETO = 1");
+				while($row2 = mysql_fetch_object($emails)){
+					$to      .= $row2->EMAIL . ",";
+				}
+
 				$message .= '<h3><strong>DADOS PESSOAIS</strong></h3>';
 				$message .= '<p style="line-height: 190%">';
-					$message .= '<b>Nome: </b>' . utf8_encode($row->NOME_COMP) . '<br>';
-					$message .= '<b>Morada: </b>' . utf8_encode($row->MORADA) . '<br>';
-					$message .= '<b>Código Postal: </b>' . $row->COD_POSTAL."-".$row->IND_CODPOSTAL . '<br>';
-					$message .= '<b>Localidade: </b>' . utf8_encode($row->LOCALIDADE) . '<br>';
-					$message .= '<b>Destrito: </b>' . utf8_encode($row->DESTRITO) . '<br>';
-					$res2=mysql_query("Select * from dbo_tab_municipios");
-					while ($row2 = mysql_fetch_object($res2)){
-						if($row2->ID_MUNICIPIO == $row->ID_MUNICIPIO){
-							$message .= '<b>Município: </b>' . utf8_encode($row2->MUNICIPIO) . '<br>';
+				$message .= '<b>Nome: </b>' . utf8_encode($row->NOME_COMP) . '<br>';
+				$message .= '<b>Morada: </b>' . utf8_encode($row->MORADA) . '<br>';
+				$message .= '<b>Código Postal: </b>' . $row->COD_POSTAL."-".$row->IND_CODPOSTAL . '<br>';
+				$message .= '<b>Localidade: </b>' . utf8_encode($row->LOCALIDADE) . '<br>';
+				$message .= '<b>Destrito: </b>' . utf8_encode($row->DESTRITO) . '<br>';
+				$res2=mysql_query("Select * from dbo_tab_municipios");
+				while ($row2 = mysql_fetch_object($res2)){
+					if($row2->ID_MUNICIPIO == $row->ID_MUNICIPIO){
+						$message .= '<b>Município: </b>' . utf8_encode($row2->MUNICIPIO) . '<br>';
+					}
+				}
+				$message .= '<b>Freguesia: </b>' . utf8_encode($row->FREGUESIA) . '<br>';
+				$message .= '<b>Banco: </b>' . utf8_encode($row->BANCO) . '<br>';
+				$res2=mysql_query("Select * from dbo_tab_lista_escolas");
+				while ($row2 = mysql_fetch_object($res2)){
+					if($row2->ID_LISTA_ESCOLAS == $row->ID_ESCOLA_TITULAR){
+						if($row->ID_ESCOLA_TITULAR==''){
+							$message .= '<b>Escola Titular: </b>' . utf8_encode($row->ESCOLA_TITULAR) . '<br>';
+						}else{
+							$message .= '<b>Escola Titular: </b>' . utf8_encode($row2->NOME_ESCOLA) . '<br>';
 						}
 					}
-					$message .= '<b>Freguesia: </b>' . utf8_encode($row->FREGUESIA) . '<br>';
-					$message .= '<b>Banco: </b>' . utf8_encode($row->BANCO) . '<br>';
-					$res2=mysql_query("Select * from dbo_tab_lista_escolas");
-					while ($row2 = mysql_fetch_object($res2)){
-						if($row2->ID_LISTA_ESCOLAS == $row->ID_ESCOLA_TITULAR){
-							if($row->ID_ESCOLA_TITULAR==''){
-								$message .= '<b>Escola Titular: </b>' . utf8_encode($row->ESCOLA_TITULAR) . '<br>';
-							}else{
-								$message .= '<b>Escola Titular: </b>' . utf8_encode($row2->NOME_ESCOLA) . '<br>';
-							}
-						}
-					}
-					$message .= '<b>Codigo Recrutamento: </b>' . utf8_encode($row->COD_RECRUTAMENTO) . '<br>';
-					$myDateTimei = DateTime::createFromFormat('Y-m-d', $row->INICIO_FUNCOES);
-					$INICIO_FUNCOES = $myDateTimei->format('d-m-Y');
-					$message .= '<b>Início de Funções: </b>' . $INICIO_FUNCOES . '<br>';
-					$message .= '<b>Telefone: </b>' . $row->TEL . '<br>';
-					$message .= '<b>Telemovel: </b>' . $row->TLM . '<br>';
-					$myDateTimea = DateTime::createFromFormat('Y-m-d', $row->DATA_NASC);
-					$DATA_NASC = $myDateTimea->format('d-m-Y');
-					$message .= '<b>Data de Nascimento: </b>' . $DATA_NASC . '<br>';
-					$message .= '<b>Nº Identificação Civil: </b>' . $row->BI . '<br>';
-					$myDateTimeb = DateTime::createFromFormat('Y-m-d', $row->DATA_VALIDADE);
-					$DATA_VALIDADE = $myDateTimeb->format('d-m-Y');
-					$message .= '<b>Data de Validade: </b>' . $DATA_VALIDADE . '<br>';
-					$message .= '<b>NIB: </b>' . $row->NIB . '<br>';
-					$message .= '<b>NISS: </b>' . $row->NISS . '<br>';
-					$message .= '<b>ADSE: </b>' . $row->ADSE . '<br>';
-					$message .= '<b>CGA: </b>' . $row->CGA . '<br>';
-					$message .= '<b>Nº dependentes: </b>' . $row->NUM_DEPENDENTES . '<br>';
+				}
+				$message .= '<b>Codigo Recrutamento: </b>' . utf8_encode($row->COD_RECRUTAMENTO) . '<br>';
+				$myDateTimei = DateTime::createFromFormat('Y-m-d', $row->INICIO_FUNCOES);
+				$INICIO_FUNCOES = $myDateTimei->format('d-m-Y');
+				$message .= '<b>Início de Funções: </b>' . $INICIO_FUNCOES . '<br>';
+				$message .= '<b>Telefone: </b>' . $row->TEL . '<br>';
+				$message .= '<b>Telemovel: </b>' . $row->TLM . '<br>';
+				$myDateTimea = DateTime::createFromFormat('Y-m-d', $row->DATA_NASC);
+				$DATA_NASC = $myDateTimea->format('d-m-Y');
+				$message .= '<b>Data de Nascimento: </b>' . $DATA_NASC . '<br>';
+				$message .= '<b>Nº Identificação Civil: </b>' . $row->BI . '<br>';
+				$myDateTimeb = DateTime::createFromFormat('Y-m-d', $row->DATA_VALIDADE);
+				$DATA_VALIDADE = $myDateTimeb->format('d-m-Y');
+				$message .= '<b>Data de Validade: </b>' . $DATA_VALIDADE . '<br>';
+				$message .= '<b>NIB: </b>' . $row->NIB . '<br>';
+				$message .= '<b>NISS: </b>' . $row->NISS . '<br>';
+				$message .= '<b>ADSE: </b>' . $row->ADSE . '<br>';
+				$message .= '<b>CGA: </b>' . $row->CGA . '<br>';
+				$message .= '<b>Nº dependentes: </b>' . $row->NUM_DEPENDENTES . '<br>';
 				$message .= '</p>';
 				$res = mysql_query("SELECT dbo_tab_escolas.*, dbo_tab_lista_escolas.NOME_ESCOLA, dbo_tab_municipios.*, dbo_tab_ano_letivo.* FROM dbo_tab_escolas, dbo_tab_lista_escolas, dbo_tab_municipios, dbo_tab_ano_letivo WHERE dbo_tab_escolas.ID_LISTA_ESCOLAS = dbo_tab_lista_escolas.ID_LISTA_ESCOLAS AND dbo_tab_escolas.ID_MUNICIPIO = dbo_tab_municipios.ID_MUNICIPIO AND dbo_tab_escolas.ID_ANO_LETIVO = dbo_tab_ano_letivo.ID_ANO_LETIVO AND dbo_tab_escolas.ID_FUNCIONARIO = $_GET[id]");
 				$num = mysql_num_rows($res);
@@ -90,7 +86,7 @@
 									</tr>
 								</thead>
 								<tbody>
-							';	
+							';
 							while($row_pre = mysql_fetch_object($pre)){
 								$message .='
 								<tr>
@@ -137,7 +133,7 @@
 									</tr>
 								</thead>
 								<tbody>
-							';	
+							';
 							while($row_pciclo = mysql_fetch_object($pciclo)){
 								$message .='
 								<tr>
@@ -171,23 +167,21 @@
 						$message .= '<hr>';
 					}
 				}
-				
+
 				//$mudar = mysql_query("UPDATE dbo_tab_funcionarios SET ENVIADO = 1 WHERE ID_FUNCIONARIO = $_GET[id]");
-				
-				//mail($to, $subject, $message, $headers);	
-				
+
+				//mail($to, $subject, $message, $headers);
+
 				echo $message;
-				
+
 				//echo " <meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_func'> ";
-				}
+			}
 
-				mostrar_dados();
-				
+			mostrar_dados();
 
-		?>	 
-		  	    
-		  
-		</div><!-- /.box-body -->
+			?>
+
+			</div><!-- /.box-body -->
 	  </div><!-- /.box -->
 	</div><!-- /.col -->
 </div><!-- /.row -->
@@ -206,5 +200,3 @@
 <script src="dist/js/app.min.js"></script>
 
 <script src="dist/js/demo.js"></script>
-
-	
