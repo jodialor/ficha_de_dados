@@ -1,8 +1,11 @@
 <?php
+	$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
+	$ano_atual = mysql_fetch_object($res2);
+
 	$search = mysql_query("select * from dbo_tab_escolas where ID_ESCOLA = $_GET[id]");
 	$row = mysql_fetch_object($search);
 	$id_escola = $row->ID_ESCOLA;
-	
+
 	if($_GET['add']==1){
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
@@ -15,6 +18,8 @@
 	if($_GET['del_ciclo']==1){
 		$res = mysql_query("DELETE FROM dbo_tab_primeiro_ciclo where ID_PRimeiro_CICLO=$_GET[id_1c]");
 	}
+
+	$turnDisable = ($row->ID_ANO_LETIVO != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
 ?>
 
 <div class="panel panel-info">
@@ -24,7 +29,8 @@
 	<div class="panel-body">
 	<?php
 		echo"<form role='form' action='index.php?mod=lista_escolas&save=2&id=".$id_escola."' id='info_escola' method='POST'>";
-	?>	
+	?>
+		<fieldset <?php echo $turnDisable; ?>>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -39,9 +45,9 @@
 									echo"<option value='$row2->ID_LISTA_ESCOLAS' selected>".utf8_encode($row2->NOME_ESCOLA)."</option>";
 								}else{
 									echo"<option value='$row2->ID_LISTA_ESCOLAS'>".utf8_encode($row2->NOME_ESCOLA)."</option>";
-								}									
+								}
 							}
-							mysql_free_result($res);
+							mysql_free_result($res2);
 							echo"
 							</select>";
 						?>
@@ -50,13 +56,13 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Outra Escola</label>
-						<?php	
+						<?php
 							echo"<input type='text' class='form-control' name='outra_escola' id='outra_escola_campo' value='".utf8_encode($row->ESCOLA)."' placeholder='Nome da Escola' />";
 						?>
 					</div>
 				</div>
 			</div>
-		
+
 			<div class="row">
 				<div class="col-md-2">
 					<div class="form-group">
@@ -73,7 +79,7 @@
 									echo"<option value='$row2->ID_MUNICIPIO'>".utf8_encode($row2->MUNICIPIO)."</option>";
 								}
 							}
-							mysql_free_result($res);
+							mysql_free_result($res2);
 							echo"
 							</select>";
 						?>
@@ -94,7 +100,7 @@
 									echo"<option value='$row2->ID_ANO_LETIVO'>".utf8_encode($row2->ANO_LETIVO)."</option>";
 								}
 							}
-							mysql_free_result($res);
+							mysql_free_result($res2);
 							echo"
 							</select>";
 						?>
@@ -103,7 +109,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Telefone</label>
-						<?php	
+						<?php
 							echo"<input type='text' id='tel' class='form-control' name='telefone' value='".$row->TELEFONE."' placeholder='Introduza o número de telefone' />";
 						?>
 					</div>
@@ -111,20 +117,21 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Email</label>
-						<?php	
+						<?php
 							echo"<input type='email' class='form-control' name='email' value='".$row->EMAIL."' placeholder='Introduza o email' />";
 						?>
 					</div>
 				</div>
 			</div>
+		</fieldset>
 		</form>
-	
-	
+
+
 	<blockquote style="margin-top: 10px;">
 		<p><strong>Dados do Pré-Escolar e/ou 1.º Ciclo</strong></p>
 	</blockquote>
 
-	
+
 	<ul class="nav nav-tabs">
 		<li id="tabPre" class="active"><a id="aPre" data-toggle="tab" href="#panePre">Pré-Escolar</a></li>
 		<li id="tab1c"><a id="a1c" data-toggle="tab" href="#pane1c">1º Ciclo</a></li>
@@ -136,6 +143,7 @@
 				<?php
 					echo"<form role='form' action='index.php?mod=edit_escola&add=1&id=".$id_escola."&tab=pre' id='pre_escolas' method='POST'>";
 				?>
+					<fieldset <?php echo $turnDisable; ?>>
 						<div class="row col-md-12">
 							<div class="col-md-3">
 								<div class="form-group">
@@ -148,7 +156,7 @@
 												echo"<option value='$row2->ID_TIPO_PRE'>".utf8_encode($row2->TIPO_PRE)."</option>";
 											}
 											mysql_free_result($res);
-											mysql_free_result($res2);											
+											mysql_free_result($res2);
 										?>
 									</select>
 								</div>
@@ -168,6 +176,7 @@
 								</div>
 							</div>
 						</div>
+					</fieldset>
 					</form>
 					<?php
 						$id_escola = $row->ID_ESCOLA;
@@ -192,8 +201,8 @@
 							</thead>
 							<tbody>";
 							while($row2 = mysql_fetch_object($res)){
-								echo" 
-								<tr> 
+								echo"
+								<tr>
 									<td>
 										" . utf8_encode($row2->TIPO_PRE) . "
 									</td>
@@ -201,9 +210,9 @@
 										" . $row2->NUM_ALUNOS . "
 									</td>
 									<td style='text-align: center;'>
-										<a href='index.php?mod=edit_escola&del_pre=1&id_pre=$row2->ID_PRE_ESCOLAR&id=$id_escola&tab=pre' class='btn btn-xs btn-danger'> 
-											<span class='glyphicon glyphicon-trash'></span>		
-											Eliminar											
+										<a href='index.php?mod=edit_escola&del_pre=1&id_pre=$row2->ID_PRE_ESCOLAR&id=$id_escola&tab=pre' class='btn btn-xs btn-danger'>
+											<span class='glyphicon glyphicon-trash'></span>
+											Eliminar
 										</a>
 									</td>
 								</tr>
@@ -226,13 +235,14 @@
 					?>
 				</div>
 			</div>
-		
+
 			<div id="pane1c" class="tab-pane">
 				<div class="container-fluid">
 					<div class="row col-md-12">
 						<?php
 							echo"<form role='form' action='index.php?mod=edit_escola&add=2&id=".$id_escola."&tab=1c' id='1c' method='POST'>";
 						?>
+						<fieldset <?php echo $turnDisable; ?>>
 							<div class="col-md-2">
 								<div class="form-group">
 									<label>Ano/Turma</label>
@@ -256,7 +266,7 @@
 													echo"<option value='$row2->ID_TIPO_CICLO'>".utf8_encode($row2->TIPO_CICLO)."</option>";
 												}
 												mysql_free_result($res);
-												mysql_free_result($res2);											
+												mysql_free_result($res2);
 											?>
 									</select>
 								</div>
@@ -278,7 +288,7 @@
 													echo"<option value='$row2->ID_NIVEL'>".utf8_encode($row2->NIVEL)."</option>";
 												}
 												mysql_free_result($res);
-												mysql_free_result($res2);											
+												mysql_free_result($res2);
 											?>
 									</select>
 								</div>
@@ -291,6 +301,7 @@
 									</button>
 								</div>
 							</div>
+						</fieldset>
 						</form>
 					</div>
 					<?php
@@ -324,8 +335,8 @@
 										</thead>
 										<tbody>";
 											while($row2 = mysql_fetch_object($res)){
-												echo" 
-													<tr> 
+												echo"
+													<tr>
 														<td>
 															" . utf8_encode($row2->ANO_TURMA) . "
 														</td>
@@ -342,14 +353,14 @@
 															" . utf8_encode($row2->NIVEL) . "
 														</td>
 														<td style='text-align: center;'>
-															<a href='index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c' class='btn btn-xs btn-danger'> 
+															<a href='index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c' class='btn btn-xs btn-danger'>
 																<span class='glyphicon glyphicon-trash'></span>
 																Eliminar
 															</a>
 														</td>
 													</tr>
 												";
-											}										
+											}
 										echo"</tbody>
 									</table>
 								</div>
@@ -371,12 +382,12 @@
 	</div>
 	</div>
 	<div class="panel-footer clearfix">
-		<button type="submit" form="info_escola" class="btn btn-primary pull-right"> 
+		<button type="submit" form="info_escola" class="btn btn-primary pull-right">
 			<span class="glyphicon glyphicon-floppy-disk"></span>
 			Guardar e Continuar
 			<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>
 		</button>
-		<a href="index.php?mod=lista_escolas" class="btn btn-default pull-right" style="margin-right: 10px;"> 
+		<a href="index.php?mod=lista_escolas" class="btn btn-default pull-right" style="margin-right: 10px;">
 			<span class="glyphicon glyphicon-ban-circle"></span>
 			Cancelar
 		</a>
@@ -399,12 +410,12 @@
 			}
 		});
 	}
-	
-	$(document).ready(function() {		
+
+	$(document).ready(function() {
 		//Obter valor da variavel 'tab' do URL
-		var tabSel = ObterValorVariavelURL("tab");	
+		var tabSel = ObterValorVariavelURL("tab");
 		//alert("Valor da variavel: " + tabSel)
-		
+
 		//Ativar o separador do Pré-escolar
 		if(tabSel == "pre"){
 			$("#tab1c").removeClass("active");
@@ -426,13 +437,13 @@
 		$("#tipo_1c").change(function () {
 			if($('#tipo_1c').val() == 12 || $('#tipo_1c').val() == 13){
 				$("#outro_tipo").prop('disabled', false);
-				$("#outro_tipo").attr('placeholder', 'Tipo de Ciclo');	
+				$("#outro_tipo").attr('placeholder', 'Tipo de Ciclo');
 			}else{
 				$("#outro_tipo").prop('disabled', true);
 				$("#outro_tipo").removeAttr('placeholder');
 			}
 		});
-		
+
 		$( document ).ready(function() {
 			if($('#lista').val() != 209){
 				$("#outra_escola_campo").prop('disabled', true);
@@ -443,14 +454,14 @@
 				if($('#lista').val() != 209){
 					$("#outra_escola_campo").prop('disabled', true);
 					$("#outra_escola_campo").val("");
-					
+
 				}else{
 					$("#outra_escola_campo").prop('disabled', false);
 				}
 				return false;
 			});
 		});
-		
+
 		onlyNum($("#tel"));
 		onlyNum($("#num_alunos_pre"));
 		onlyNum($("#num_alunos_1c"));

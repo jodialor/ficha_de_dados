@@ -45,6 +45,8 @@
 		<div class="row-fluid">
 			<?php
 				$res = mysql_query("SELECT * FROM dbo_tab_escolas, dbo_tab_lista_escolas, dbo_tab_municipios, dbo_tab_ano_letivo WHERE dbo_tab_escolas.ID_LISTA_ESCOLAS = dbo_tab_lista_escolas.ID_LISTA_ESCOLAS AND dbo_tab_escolas.ID_MUNICIPIO = dbo_tab_municipios.ID_MUNICIPIO AND dbo_tab_escolas.ID_ANO_LETIVO = dbo_tab_ano_letivo.ID_ANO_LETIVO AND dbo_tab_escolas.ID_FUNCIONARIO = $_SESSION[id_funcionario]");
+				$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
+				$ano_atual = mysql_fetch_object($res2);
 				$num = mysql_num_rows($res);
 				if($num>0){
 					echo"<div class='table-responsive'>
@@ -77,7 +79,6 @@
 								}else{
 									echo utf8_encode($row->NOME_ESCOLA);
 								}
-								
 								echo"</td>
 								<td>
 									" . utf8_encode($row->MUNICIPIO) . "
@@ -85,18 +86,18 @@
 								<td>
 									" . utf8_encode($row->ANO_LETIVO) . "
 								</td>
-								<td style='text-align: center;'>
-									<a href='index.php?mod=edit_escola&id=$row->ID_ESCOLA' class='btn btn-xs btn-warning'> 
+								<td style='text-align: center;'>";
+								$turnDisable = ($row->ID_ANO_LETIVO != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
+										echo "<a href='index.php?mod=edit_escola&id=$row->ID_ESCOLA' class='btn btn-xs btn-warning' ".$turnDisable.">
 										<span class='glyphicon glyphicon-pencil'></span>
 										Editar
-									</a>
-									<a href='index.php?mod=lista_escolas&delete=1&id=$row->ID_ESCOLA' class='btn btn-xs btn-danger'> 
+									</a> ";
+									echo " <a href='index.php?mod=lista_escolas&delete=1&id=$row->ID_ESCOLA' class='btn btn-xs btn-danger'>
 										<span class='glyphicon glyphicon-trash'></span>
 										Eliminar
 									</a>
 								</td>
-							</tr>
-						";
+							</tr>";
 					}
 								echo"</tbody>
 							</table>
@@ -115,13 +116,13 @@
 		</div>
 	</div>
 	<div class="panel-footer clearfix">
-	<?php	
+	<?php
 		echo"<a class='btn btn-primary pull-right' href='index.php?mod=finish&save=1&id=". $_SESSION[id_funcionario] ."'>";
 	?>
 			<span class='glyphicon glyphicon-send' aria-hidden='true'></span>
 			Enviar
 		</a>
-		<a href='index.php?mod=pessoal_2&search=3' class='btn btn-default pull-right' style='margin-right: 10px;'> 
+		<a href='index.php?mod=pessoal_2&search=3' class='btn btn-default pull-right' style='margin-right: 10px;'>
 			<span class='glyphicon glyphicon-menu-left' aria-hidden='true'></span>
 			Voltar
 		</a>
