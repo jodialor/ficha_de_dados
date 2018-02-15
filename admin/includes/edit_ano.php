@@ -5,7 +5,9 @@
 	if($_GET['save'] == 1){
 		$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$_POST[ano_letivo]',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
 		// Garantir que apenas pode estar selecionado um ano letivo atual
-		$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
+		if ($_POST['atual']==1){
+			$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
+		}
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
 	}
 ?>
@@ -43,11 +45,11 @@
 
 
 <!-- jQuery 2.1.4 -->
-<script src="../admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="../admin/bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="../admin/plugins/iCheck/icheck.min.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -60,13 +62,13 @@
 		});
 	});
 
-  /*$(function () {
+  $(function () {
 		$('input').iCheck({
 		  checkboxClass: 'icheckbox_square-blue',
 		  radioClass: 'iradio_square-blue',
 		  increaseArea: '20%' // optional
 		});
-  });*/
+  });
 
 
 </script>
