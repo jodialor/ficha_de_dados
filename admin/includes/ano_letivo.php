@@ -1,9 +1,9 @@
 <?php
-	
+
 	if($_GET['delete']==1){
 		$res = mysql_query("DELETE FROM `dbo_tab_ano_letivo` WHERE ID_ANO_LETIVO = $_GET[id]");
 	}
-	
+
 ?>
 
 <div class="row">
@@ -14,33 +14,35 @@
 			<thead>
 			  <tr>
 				<th>Ano Letivo</th>
+				<th>Atual</th>
 				<th>Opções</th>
 			  </tr>
 			</thead>
 			<tbody>
 			<?php
 				$res = mysql_query("SELECT * FROM dbo_tab_ano_letivo");
-				
-				while($row = mysql_fetch_object($res)){
-					echo"<tr>
-						<td>"; 
-							echo $row->ANO_LETIVO;
-						echo"</td>
+
+				while($row = mysql_fetch_object($res)){ ?>
+					<tr>
+						<td> <?php echo $row->ANO_LETIVO; ?> </td>
+						<td>
+							<?php
+							$isChecked = ($row->ANO_ATUAL) ? "checked" : "";
+							echo '<input type="checkbox" name="ano_atual" value="" disabled '.$isChecked.'>';
+							?>
 						</td>
 						<td style='text-align: center;'>
-							<a href='index.php?mod=edit_ano&id=". $row->ID_ANO_LETIVO ."' class='btn btn-xs btn-warning'> 
+							<a href='index.php?mod=edit_ano&id=<?php echo $row->ID_ANO_LETIVO; ?>' class='btn btn-xs btn-warning'>
 								<span class='glyphicon glyphicon-pencil'></span>
 								Editar
 							</a>
-							<a href='index.php?mod=ano_letivo&delete=1&id=". $row->ID_ANO_LETIVO ."' class='btn btn-xs btn-danger'> 
+							<a href='index.php?mod=ano_letivo&delete=1&id=<?php echo $row->ID_ANO_LETIVO; ?>' class='btn btn-xs btn-danger'>
 								<span class='glyphicon glyphicon-trash'></span>
 								Eliminar
-							</a>";
-						echo"
+							</a>
 						</td>
-					</tr>";
-				}
-			?>
+					</tr>
+				<?php }	?>
 			</tbody>
 		  </table>
 		  <a href="index.php?mod=reg_ano" type="button" class="btn btn-success"><i class="fa fa-calendar-plus-o"></i> Novo Ano Letivo</a>
@@ -63,7 +65,7 @@
 <script src="dist/js/app.min.js"></script>
 
 <script src="dist/js/demo.js"></script>
-	
+
 <script>
 	$(function () {
 		$('#example1').DataTable({
@@ -76,6 +78,6 @@
 			  "orderable": false,
 			}],
 			"order": [[ 0, "asc" ]]
-		});	
+		});
 	});
 </script>
