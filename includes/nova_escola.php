@@ -3,14 +3,20 @@
 		$telefone = $_POST[telefone];
 		$email = $_POST[email];
 		$outra_escola = utf8_decode($_POST[outra_escola]);
-		
+
 		if($_POST[lista] == ''){
 			$escola = 209;
 		}else{
 			$escola = $_POST[lista];
 		}
-		$res = mysql_query("INSERT INTO dbo_tab_escolas(ID_LISTA_ESCOLAS, ESCOLA, ID_MUNICIPIO, ID_ANO_LETIVO, TELEFONE, EMAIL, ID_FUNCIONARIO) VALUES ('$escola', '$outra_escola', '$_POST[municipio]', '$_POST[ano_letivo]', '$telefone', '$email', $_SESSION[id_funcionario])");
-		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=nova_escola_2'>";
+		$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
+		$ano_atual = mysql_fetch_object($res2);
+		if($_POST[ano_letivo_atual] == $ano_atual->ID_ANO_LETIVO){
+			$res = mysql_query("INSERT INTO dbo_tab_escolas(ID_LISTA_ESCOLAS, ESCOLA, ID_MUNICIPIO, ID_ANO_LETIVO, TELEFONE, EMAIL, ID_FUNCIONARIO) VALUES ('$escola', '$outra_escola', '$_POST[municipio]', '$_POST[ano_letivo_atual]', '$telefone', '$email', $_SESSION[id_funcionario])");
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=nova_escola_2'>";
+		}else{
+
+		}
 	}
 ?>
 
@@ -45,7 +51,7 @@
 					</div>
 				</div>
 			</div>
-		
+
 			<div class="row">
 				<div class="col-md-2">
 					<div class="form-group">
@@ -59,8 +65,7 @@
 								echo"<option value='$row2->ID_MUNICIPIO'>".utf8_encode($row2->MUNICIPIO)."</option>";
 							}
 							mysql_free_result($res);
-							echo"
-							</select>";
+							echo "</select>";
 						?>
 					</div>
 				</div>
@@ -69,16 +74,17 @@
 						<label>Ano Letivo**</label>
 						<?php
 							echo"
-							<select class='form-control' name='ano_letivo' required>
+							<select class='form-control' name='ano_letivo' id='ano_letivo' required disabled>
 							<option value=''>-selecione-</option>";
 							$res2=mysql_query("Select * from dbo_tab_ano_letivo");
 							while ($row2 = mysql_fetch_object($res2)){
-								echo"<option value='$row2->ID_ANO_LETIVO'>".utf8_encode($row2->ANO_LETIVO)."</option>";
+								$is_selected = ($row2->ANO_ATUAL) ? "selected" : "";
+								echo"<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";
 							}
-							mysql_free_result($res);
-							echo"
-							</select>";
+							mysql_free_result($res2);
+							echo "</select>";
 						?>
+						<input type="hidden" id="anoatual" name="ano_letivo_atual"/>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -97,12 +103,12 @@
 		</div>
 	</form>
 	<div class="panel-footer clearfix">
-		<button type="submit" form="info_escola" class="btn btn-primary pull-right"> 
+		<button type="submit" form="info_escola" class="btn btn-primary pull-right">
 			<span class="glyphicon glyphicon-floppy-disk"></span>
 			Guardar e Continuar
 			<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>
 		</button>
-		<a href="index.php?mod=lista_escolas" class="btn btn-default pull-right" style="margin-right: 10px;"> 
+		<a href="index.php?mod=lista_escolas" class="btn btn-default pull-right" style="margin-right: 10px;">
 			<span class="glyphicon glyphicon-ban-circle"></span>
 			Cancelar
 		</a>
@@ -122,22 +128,26 @@ function onlyNum(id){
 }
 
 $( document ).ready(function() {
+	var option = $('#ano_letivo option:selected').val();
+	$('#anoatual').val(option);
+
 	if($('#lista').val() != 209){
 		$("#outra_escola_campo").prop('disabled', true);
 	}else{
 		$("#outra_escola_campo").prop('disabled', false);
 	}
-    $("#lista").change(function () {
+  $("#lista").change(function () {
 		if($('#lista').val() != 209){
 			$("#outra_escola_campo").prop('disabled', true);
 			$("#outra_escola_campo").val("");
-			
 		}else{
 			$("#outra_escola_campo").prop('disabled', false);
 		}
 		return false;
 	});
-	
+
 	onlyNum($("#tel"));
+
+
 });
 </script>
