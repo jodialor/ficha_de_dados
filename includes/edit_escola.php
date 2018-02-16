@@ -5,6 +5,7 @@
 	$search = mysql_query("select * from dbo_tab_escolas where ID_ESCOLA = $_GET[id]");
 	$row = mysql_fetch_object($search);
 	$id_escola = $row->ID_ESCOLA;
+	$id_anoletivo = $row->ID_ANO_LETIVO;
 
 	if($_GET['add']==1){
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
@@ -12,14 +13,15 @@
 	if($_GET['add']==2){
 		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ANO_TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ('$_POST[ano_turma]', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$_POST[outro_tipo]', '$_POST[nivel]', $id_escola)");
 	}
-	if($_GET['del_pre']==1){
+	if($_GET['del_pre']==1 && $id_anoletivo == $ano_atual->ID_ANO_LETIVO){
 		$res = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_PRE_ESCOLAR=$_GET[id_pre]");
 	}
-	if($_GET['del_ciclo']==1){
+	if($_GET['del_ciclo']==1 && $id_anoletivo == $ano_atual->ID_ANO_LETIVO){
 		$res = mysql_query("DELETE FROM dbo_tab_primeiro_ciclo where ID_PRimeiro_CICLO=$_GET[id_1c]");
 	}
 
-	$turnDisable = ($row->ID_ANO_LETIVO != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
+	$turnDisable = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
+	$delete_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "return false;" : "";
 ?>
 
 <div class="panel panel-info">
@@ -201,6 +203,7 @@
 							</thead>
 							<tbody>";
 							while($row2 = mysql_fetch_object($res)){
+								$del_pre_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_pre=1&id_pre=$row2->ID_PRE_ESCOLAR&id=$id_escola&tab=pre";
 								echo"
 								<tr>
 									<td>
@@ -210,7 +213,7 @@
 										" . $row2->NUM_ALUNOS . "
 									</td>
 									<td style='text-align: center;'>
-										<a href='index.php?mod=edit_escola&del_pre=1&id_pre=$row2->ID_PRE_ESCOLAR&id=$id_escola&tab=pre' class='btn btn-xs btn-danger'>
+										<a href='$del_pre_onoff' class='btn btn-xs btn-danger' $turnDisable>
 											<span class='glyphicon glyphicon-trash'></span>
 											Eliminar
 										</a>
@@ -335,6 +338,7 @@
 										</thead>
 										<tbody>";
 											while($row2 = mysql_fetch_object($res)){
+												$del_ciclo_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c";
 												echo"
 													<tr>
 														<td>
@@ -353,7 +357,7 @@
 															" . utf8_encode($row2->NIVEL) . "
 														</td>
 														<td style='text-align: center;'>
-															<a href='index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c' class='btn btn-xs btn-danger'>
+															<a href='$del_ciclo_onoff' class='btn btn-xs btn-danger' $turnDisable>
 																<span class='glyphicon glyphicon-trash'></span>
 																Eliminar
 															</a>
@@ -382,7 +386,7 @@
 	</div>
 	</div>
 	<div class="panel-footer clearfix">
-		<button type="submit" form="info_escola" class="btn btn-primary pull-right">
+		<button type="submit" form="info_escola" class="btn btn-primary pull-right" <?php echo $turnDisable; ?>>
 			<span class="glyphicon glyphicon-floppy-disk"></span>
 			Guardar e Continuar
 			<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>

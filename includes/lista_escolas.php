@@ -2,6 +2,11 @@
 	$search = mysql_query("SELECT ID_FUNCIONARIO FROM dbo_tab_funcionarios WHERE NIF = $_SESSION[nif]");
 	$row = mysql_fetch_object($search);
 	$_SESSION[id_funcionario] = $row->ID_FUNCIONARIO;
+
+	$id_anoletivo = utf8_decode($_POST[ano_letivo]);
+	$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
+	$ano_atual = mysql_fetch_object($res2);
+
 	//if($_GET['save']==1){
 	//	$escola = utf8_decode($_POST[escola]);
 	//	$municipio = utf8_decode($_POST[municipio]);
@@ -9,7 +14,8 @@
 	//	$res = mysql_query("INSERT INTO dbo_tab_escolas(ESCOLA, MUNICIPIO, ANO_LETIVO, TELEFONE, EMAIL, ID_FUNCIONARIO) VALUES ('$escola', '$municipio', '$ano_letivo', '$_POST[telefone]', '$_POST[email]', $_SESSION[id_funcionario])");
 	//	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
 	//}
-	if($_GET['save']==2){
+
+if($_GET['save']==2 /*&& $id_anoletivo == $ano_atual->ID_ANO_LETIVO*/){
 		$outra_escola = utf8_decode($_POST[outra_escola]);
 		$telefone = $_POST[telefone];
 		$email = $_POST[email];
@@ -22,9 +28,13 @@
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
 	}
 	if($_GET['delete']==1){
-		$res2 = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_ESCOLA = $_GET[id]");
-		$res2 = mysql_query("DELETE FROM dbo_tab_primeiro_ciclo where ID_ESCOLA = $_GET[id]");
-		$res = mysql_query("DELETE FROM dbo_tab_escolas where ID_ESCOLA=$_GET[id]");
+		$search = mysql_query("SELECT ID_ANO_LETIVO FROM dbo_tab_escolas WHERE ID_FUNCIONARIO = $_SESSION[id_funcionario] and ID_ESCOLA = $_GET[id] ");
+		$row = mysql_fetch_object($search);
+		if($row->ID_ANO_LETIVO == $ano_atual->ID_ANO_LETIVO){
+			$res2 = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_ESCOLA = $_GET[id]");
+			$res2 = mysql_query("DELETE FROM dbo_tab_primeiro_ciclo where ID_ESCOLA = $_GET[id]");
+			$res = mysql_query("DELETE FROM dbo_tab_escolas where ID_ESCOLA=$_GET[id]");
+		}
 		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
 	}
 	if($_GET['del_new']==1){
@@ -68,37 +78,46 @@
 									</th>
 								</tr>
 							</thead>
-								<tbody>
-							";
-					while($row = mysql_fetch_object($res)){
-						echo"
-							<tr>
-								<td>";
-								if($row->ID_LISTA_ESCOLAS == 209){
-									echo utf8_encode($row->ESCOLA);
-								}else{
-									echo utf8_encode($row->NOME_ESCOLA);
+								<tbody>";
+								while($row = mysql_fetch_object($res)){
+									echo"
+										<tr>
+											<td>";
+											if($row->ID_LISTA_ESCOLAS == 209){
+												echo utf8_encode($row->ESCOLA);
+											}else{
+												echo utf8_encode($row->NOME_ESCOLA);
+											}
+											echo"</td>
+											<td>
+												" . utf8_encode($row->MUNICIPIO) . "
+											</td>
+											<td>
+												" . utf8_encode($row->ANO_LETIVO) . "
+											</td>
+											<td style='text-align: center;'>";
+
+											if($row->ID_ANO_LETIVO != $ano_atual->ID_ANO_LETIVO){
+												$turnDisable = "disabled";
+												$edit_href = "javascript:void(0)";
+												$delete_href = "javascript:void(0)";
+											}else{
+												$turnDisable = "";
+												$edit_href = "index.php?mod=edit_escola&id=$row->ID_ESCOLA";
+												$delete_href = "index.php?mod=lista_escolas&delete=1&id=$row->ID_ESCOLA";
+											}
+
+											echo "<a href='".$edit_href."' class='btn btn-xs btn-warning' ".$turnDisable.">
+													<span class='glyphicon glyphicon-pencil'></span>
+													Editar
+												</a> ";
+											echo " <a href='".$delete_href."' class='btn btn-xs btn-danger' ".$turnDisable.">
+													<span class='glyphicon glyphicon-trash'></span>
+													Eliminar
+												</a>
+											</td>
+										</tr>";
 								}
-								echo"</td>
-								<td>
-									" . utf8_encode($row->MUNICIPIO) . "
-								</td>
-								<td>
-									" . utf8_encode($row->ANO_LETIVO) . "
-								</td>
-								<td style='text-align: center;'>";
-								$turnDisable = ($row->ID_ANO_LETIVO != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
-										echo "<a href='index.php?mod=edit_escola&id=$row->ID_ESCOLA' class='btn btn-xs btn-warning' ".$turnDisable.">
-										<span class='glyphicon glyphicon-pencil'></span>
-										Editar
-									</a> ";
-									echo " <a href='index.php?mod=lista_escolas&delete=1&id=$row->ID_ESCOLA' class='btn btn-xs btn-danger'>
-										<span class='glyphicon glyphicon-trash'></span>
-										Eliminar
-									</a>
-								</td>
-							</tr>";
-					}
 								echo"</tbody>
 							</table>
 						</div>";

@@ -44,7 +44,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Outra Escola</label>
-							<input type='text' class='form-control' name='outra_escola' id='outra_escola_campo' value='<?php echo utf8_encode($row->ESCOLA); ?>' placeholder='Nome da Escola' />";
+							<input type='text' class='form-control' name='outra_escola' id='outra_escola_campo' value='<?php echo utf8_encode($row->ESCOLA); ?>' placeholder='Nome da Escola' />
 					</div>
 				</div>
 			</div>
