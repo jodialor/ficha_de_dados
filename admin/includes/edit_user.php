@@ -11,7 +11,7 @@ if($_GET['save']==1){
 				echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_users'>";
 			}else{
 				echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=edit_user&m=4&id=". $_GET[id] ."'>";
-			}	
+			}
 		}else{
 			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=edit_user&m=3&id=". $_GET[id] ."'>";
 		}
@@ -79,11 +79,11 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 
 
 <!-- jQuery 2.1.4 -->
-<script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="../admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../admin/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script src="../admin/plugins/iCheck/icheck.min.js"></script>
 
 <script>
   $(function () {

@@ -21,7 +21,6 @@
 	}
 
 	$turnDisable = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "disabled" : "";
-	$delete_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "return false;" : "";
 ?>
 
 <div class="panel panel-info">
@@ -93,7 +92,7 @@
 						<select class='form-control' name='ano_letivo_atual' id='ano_letivo' required disabled>
 						<option value=''>-selecione-</option>
 						<?php
-							$res2=mysql_query("Select * from dbo_tab_ano_letivo");
+							$res2=mysql_query("Select * from dbo_tab_ano_letivo ORDER BY ANO_LETIVO DESC");
 							while ($row2 = mysql_fetch_object($res2)){
 								$is_selected = ($row2->ANO_ATUAL) ? "selected" : "";
 								echo"<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";

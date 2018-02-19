@@ -71,12 +71,12 @@
 				</div>
 				<div class="col-md-2">
 					<div class="form-group">
-						<label>Ano Letivo**</label>
+						<label>Ano Letivo*</label>
 						<?php
 							echo"
 							<select class='form-control' name='ano_letivo' id='ano_letivo' required disabled>
 							<option value=''>-selecione-</option>";
-							$res2=mysql_query("Select * from dbo_tab_ano_letivo");
+							$res2=mysql_query("Select * from dbo_tab_ano_letivo ORDER BY ANO_LETIVO DESC");
 							while ($row2 = mysql_fetch_object($res2)){
 								$is_selected = ($row2->ANO_ATUAL) ? "selected" : "";
 								echo"<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";
