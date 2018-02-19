@@ -69,18 +69,18 @@
 				<div class="col-md-2">
 					<div class="form-group">
 						<label>Ano Letivo*</label>
-						<select class='form-control' name='ano_letivo' required>
-							<option value=''>-selecione-</option>
-							<?php
+						<select class='form-control' name='ano_letivo_atual' id='ano_letivo' required disabled>
+						<option value=''>-selecione-</option>
+						<?php
 							$res2=mysql_query("Select * from dbo_tab_ano_letivo");
 							while ($row2 = mysql_fetch_object($res2)){
-								$ano_selected = ($row2->ID_ANO_LETIVO == $row->ID_ANO_LETIVO) ? "selected" : "";
-								echo "<option value='$row2->ID_ANO_LETIVO' ".$ano_selected.">".utf8_encode($row2->ANO_LETIVO)."</option>";
+								$is_selected = ($row2->ANO_ATUAL) ? "selected" : "";
+								echo"<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";
 							}
 							mysql_free_result($res2);
-							?>
+						?>
 						</select>
-
+						<input type="hidden" id="anoatual" name="ano_letivo"/>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -407,6 +407,11 @@ $( document ).ready(function() {
 		$("#panePre").removeClass("active");
 		$("#pane1c").addClass("active");
 	}
+
+	//copiar o valor do ano letivo selecionado na select box para o input hidden
+	var option = $('#ano_letivo option:selected').val();
+	$('#anoatual').val(option);
+
 	$("#tipo_1c").change(function () {
 			if($('#tipo_1c').val() == 12 || $('#tipo_1c').val() == 13){
 				$("#outro_tipo").prop('disabled', false);

@@ -128,6 +128,7 @@ function onlyNum(id){
 }
 
 $( document ).ready(function() {
+	//copiar o valor do ano letivo selecionado na select box para o input hidden
 	var option = $('#ano_letivo option:selected').val();
 	$('#anoatual').val(option);
 

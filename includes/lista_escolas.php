@@ -24,8 +24,10 @@ if($_GET['save']==2 /*&& $id_anoletivo == $ano_atual->ID_ANO_LETIVO*/){
 		}else{
 			$escola = $_POST[lista];
 		}
-		$res = mysql_query("UPDATE dbo_tab_escolas SET ESCOLA='$outra_escola', ID_ANO_LETIVO='$_POST[ano_letivo]', TELEFONE='$telefone', EMAIL='$email', ID_FUNCIONARIO=$_SESSION[id_funcionario], ID_LISTA_ESCOLAS='$escola', ID_MUNICIPIO='$_POST[municipio]' WHERE ID_ESCOLA=$_GET[id]");
-		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
+		if($_POST[ano_letivo] == $ano_atual->ID_ANO_LETIVO){
+			$res = mysql_query("UPDATE dbo_tab_escolas SET ESCOLA='$outra_escola', ID_ANO_LETIVO='$_POST[ano_letivo]', TELEFONE='$telefone', EMAIL='$email', ID_FUNCIONARIO=$_SESSION[id_funcionario], ID_LISTA_ESCOLAS='$escola', ID_MUNICIPIO='$_POST[municipio]' WHERE ID_ESCOLA=$_GET[id]");
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
+		}
 	}
 	if($_GET['delete']==1){
 		$search = mysql_query("SELECT ID_ANO_LETIVO FROM dbo_tab_escolas WHERE ID_FUNCIONARIO = $_SESSION[id_funcionario] and ID_ESCOLA = $_GET[id] ");
