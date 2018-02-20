@@ -3,6 +3,9 @@
 	$row = mysql_fetch_object($search);
 	$id_escola = $row->ID_ESCOLA;
 
+	$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
+	$ano_atual = mysql_fetch_object($res2);
+
 	if($_GET['add']==1){
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
@@ -16,6 +19,8 @@
 	if($_GET['del_ciclo']==1){
 		$res = mysql_query("DELETE FROM dbo_tab_primeiro_ciclo where ID_PRIMEIRO_CICLO=$_GET[id]");
 	}
+
+	$turnDisable = ($ano_atual->ID_ANO_LETIVO > 0) ? "" : "disabled";
 ?>
 
 <div class="panel panel-info">
@@ -24,6 +29,7 @@
 	</div>
 	<div class="panel-body">
 		<form role='form' enctype='multipart/form-data' action='index.php?mod=lista_escolas&save=2&id="<?php echo $id_escola; ?>"' id='info_escola' method='POST'>
+			<fieldset <?php echo $turnDisable; ?>>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -100,6 +106,7 @@
 					</div>
 				</div>
 			</div>
+		</fieldset>
 		</form>
 
 
@@ -118,6 +125,7 @@
 				<div class="container-fluid">
 
 					<form role='form' action='index.php?mod=nova_escola_2&add=1&tab=pre' id='pre_escolas' method='POST'>
+						<fieldset <?php echo $turnDisable; ?>>
 						<div class="row col-md-12">
 							<div class="col-md-3">
 								<div class="form-group">
@@ -150,6 +158,7 @@
 								</div>
 							</div>
 						</div>
+					</fieldset>
 					</form>
 					<?php
 						$id_escola = $row->ID_ESCOLA;
@@ -214,7 +223,8 @@
 					<div class="row col-md-12">
 						<!-- <form role="form" enctype='multipart/form-data' action="index.php?mod=nova_escola_2&add=2" id="novo_registo_1c" method="POST"> -->
 
-							<form role='form' action='index.php?mod=nova_escola_2&add=2&tab=1c' id='1c' method='POST'>
+						<form role='form' action='index.php?mod=nova_escola_2&add=2&tab=1c' id='1c' method='POST'>
+							<fieldset <?php echo $turnDisable; ?>>
 							<div class="col-md-2">
 								<div class="form-group">
 									<label>Ano/Turma</label>
@@ -273,6 +283,7 @@
 									</button>
 								</div>
 							</div>
+						</fieldset>
 						</form>
 					</div>
 					<?php
