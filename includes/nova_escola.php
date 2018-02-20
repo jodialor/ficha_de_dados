@@ -11,11 +11,13 @@
 		}
 		$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
 		$ano_atual = mysql_fetch_object($res2);
-		if($_POST[ano_letivo_atual] == $ano_atual->ID_ANO_LETIVO){
+
+		//permitir apenas registar escola se o ano letivo atual estiver definido e seleccionado
+		if($_POST[ano_letivo_atual] == $ano_atual->ID_ANO_LETIVO && $ano_atual->ID_ANO_LETIVO > 0){
 			$res = mysql_query("INSERT INTO dbo_tab_escolas(ID_LISTA_ESCOLAS, ESCOLA, ID_MUNICIPIO, ID_ANO_LETIVO, TELEFONE, EMAIL, ID_FUNCIONARIO) VALUES ('$escola', '$outra_escola', '$_POST[municipio]', '$_POST[ano_letivo_atual]', '$telefone', '$email', $_SESSION[id_funcionario])");
 			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=nova_escola_2'>";
 		}else{
-
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas&erro=1'>";
 		}
 	}
 ?>

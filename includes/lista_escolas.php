@@ -7,6 +7,13 @@
 	$res2 = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE dbo_tab_ano_letivo.ANO_ATUAL = 1");
 	$ano_atual = mysql_fetch_object($res2);
 
+	if($_GET['erro']==1){
+		echo '<div class="alert alert-warning">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Atenção!</strong> Não é possível alterar ou adicionar escolas pois o ano letivo atual não está definido! Contacte o administrador.
+		</div>';
+	}
+
 	//if($_GET['save']==1){
 	//	$escola = utf8_decode($_POST[escola]);
 	//	$municipio = utf8_decode($_POST[municipio]);
@@ -15,7 +22,8 @@
 	//	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_escolas'>";
 	//}
 
-if($_GET['save']==2 /*&& $id_anoletivo == $ano_atual->ID_ANO_LETIVO*/){
+//permitir apenas alterar informações do registo da escola se o ano letivo atual estiver definido e seleccionado
+if($_GET['save']==2 && $ano_atual->ID_ANO_LETIVO > 0){
 		$outra_escola = utf8_decode($_POST[outra_escola]);
 		$telefone = $_POST[telefone];
 		$email = $_POST[email];
@@ -147,7 +155,13 @@ if($_GET['save']==2 /*&& $id_anoletivo == $ano_atual->ID_ANO_LETIVO*/){
 			<span class='glyphicon glyphicon-menu-left' aria-hidden='true'></span>
 			Voltar
 		</a>
-		<a class="btn btn-success" href="index.php?mod=nova_escola">
+		<?php
+		if($ano_atual->ID_ANO_LETIVO > 0){
+			echo '<a class="btn btn-success" href="index.php?mod=nova_escola">';
+		}	else {
+			echo '<a class="btn btn-success" href="index.php?mod=lista_escolas&erro=1" disabled>';
+		}
+		?>
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 			Adicionar Escola
 		</a>
