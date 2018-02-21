@@ -1,5 +1,14 @@
 <?php
 
+	if($_GET['save'] == 1){
+		$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$_POST[ano_letivo]',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
+		// Garantir que apenas pode estar selecionado um ano letivo atual
+		if ($_POST['atual']==1){
+			$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
+		}
+		//echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
+	}
+
 	if($_GET['delete']==1){
 		$search = mysql_query("SELECT * from dbo_tab_escolas where ID_ANO_LETIVO = $_GET[id] limit 1");
 		$num_rows = mysql_num_rows($search);

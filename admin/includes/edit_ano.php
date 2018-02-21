@@ -1,19 +1,10 @@
 <?php
 	$res = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE ID_ANO_LETIVO = $_GET[id]");
 	$row = mysql_fetch_object($res);
-
-	if($_GET['save'] == 1){
-		$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$_POST[ano_letivo]',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
-		// Garantir que apenas pode estar selecionado um ano letivo atual
-		if ($_POST['atual']==1){
-			$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
-		}
-		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
-	}
 ?>
 <br>
 <br>
-<form class="form-inline" action='index.php?mod=edit_ano&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
+<form class="form-inline" action='index.php?mod=ano_letivo&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
@@ -53,6 +44,12 @@
 
 <script>
 	$(document).ready(function() {
+		if( $('#ano_atual').is(':checked') ){
+			$('#atual').val("1");
+		}else{
+			$('#atual').val("0");
+		}
+
 		$('#ano_atual').change( function(){
 			if( $(this).is(':checked') ){
 				$('#atual').val("1");
