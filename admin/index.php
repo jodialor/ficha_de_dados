@@ -22,7 +22,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
   <head>
-    <meta charset="utf-8">
+		<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Página de Gestão</title>
 	<link rel="icon" href="dist/img/favicon.ico">
@@ -223,7 +223,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						  DSEAM
 						</div>
 						<!-- Default to the left -->
-						<strong>Copyright &copy; 2016 <a href='http://www.madeira-edu.pt/dseam'>DSEAM</a>.</strong> Todos os direitos reservados.
+						<strong>Copyright &copy; 2018 <a href='http://www.madeira-edu.pt/dseam'>DSEAM</a>.</strong> Todos os direitos reservados.
 					  </footer>
 					";
 				}else{

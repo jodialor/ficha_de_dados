@@ -11,7 +11,10 @@
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
 	if($_GET['add']==2){
-		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ANO_TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ('$_POST[ano_turma]', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$_POST[outro_tipo]', '$_POST[nivel]', $id_escola)");
+		$ano_turma = utf8_decode($_POST[ano_turma]);
+		$outro_tipo = utf8_decode($_POST[outro_tipo]);
+
+		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ANO_TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ('$ano_turma', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$outro_tipo', '$_POST[nivel]', $id_escola)");
 	}
 	if($_GET['del_pre']==1 && $id_anoletivo == $ano_atual->ID_ANO_LETIVO){
 		$res = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_PRE_ESCOLAR=$_GET[id_pre]");
