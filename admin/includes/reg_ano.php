@@ -4,7 +4,8 @@ if($_GET['new']==1){
 	if (isset($_POST["ano_atual"])) {
 		$atual_year = $_POST["ano_atual"];
 	}
-	$res = mysql_query("INSERT INTO `dbo_tab_ano_letivo`(`ANO_LETIVO`,`ANO_ATUAL`) VALUES ('$_POST[ano_letivo]',$atual_year)");
+	$ano_letivo = utf8_decode($_POST[ano_letivo]);
+	$res = mysql_query("INSERT INTO `dbo_tab_ano_letivo`(`ANO_LETIVO`,`ANO_ATUAL`) VALUES ('$ano_letivo',$atual_year)");
 	// Garantir que apenas pode estar selecionado um ano letivo atual
 	if($atual_year == "1"){
 		$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ANO_LETIVO != $_POST[ano_letivo]");
