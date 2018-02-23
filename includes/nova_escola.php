@@ -32,18 +32,16 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Escola/Instituição*</label>
-						<?php
-							echo"
-							<select class='form-control' name='lista' id='lista' required>
-							<option value=''>-selecione-</option>";
+						<select class='form-control' name='lista' id='lista' required>
+							<option value=''>-selecione-</option>
+							<?php
 							$res2=mysql_query("Select * from dbo_tab_lista_escolas ORDER BY NOME_ESCOLA ASC");
 							while ($row2 = mysql_fetch_object($res2)){
-								echo"<option value='$row2->ID_LISTA_ESCOLAS'>".utf8_encode($row2->NOME_ESCOLA)."</option>";
+								echo "<option value='$row2->ID_LISTA_ESCOLAS'>".utf8_encode($row2->NOME_ESCOLA)."</option>";
 							}
 							mysql_free_result($res);
-							echo"
-							</select>";
-						?>
+							?>
+						</select>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -58,34 +56,32 @@
 				<div class="col-md-2">
 					<div class="form-group">
 						<label>Município*</label>
-						<?php
-							echo"
-							<select class='form-control' name='municipio' required>
-							<option value=''>-selecione-</option>";
+						<select class='form-control' name='municipio' required>
+							<option value=''>-selecione-</option>
+							<?php
 							$res2=mysql_query("Select * from dbo_tab_municipios");
 							while ($row2 = mysql_fetch_object($res2)){
-								echo"<option value='$row2->ID_MUNICIPIO'>".utf8_encode($row2->MUNICIPIO)."</option>";
+								echo "<option value='$row2->ID_MUNICIPIO'>".utf8_encode($row2->MUNICIPIO)."</option>";
 							}
 							mysql_free_result($res);
-							echo "</select>";
-						?>
+							?>
+						</select>
 					</div>
 				</div>
 				<div class="col-md-2">
 					<div class="form-group">
 						<label>Ano Letivo*</label>
-						<?php
-							echo"
-							<select class='form-control' name='ano_letivo' id='ano_letivo' required disabled>
-							<option value=''>-selecione-</option>";
+						<select class='form-control' name='ano_letivo' id='ano_letivo' required disabled>
+							<option value=''>-selecione-</option>
+							<?php
 							$res2=mysql_query("Select * from dbo_tab_ano_letivo ORDER BY ANO_LETIVO DESC");
 							while ($row2 = mysql_fetch_object($res2)){
 								$is_selected = ($row2->ANO_ATUAL) ? "selected" : "";
-								echo"<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";
+								echo "<option value='$row2->ID_ANO_LETIVO' $is_selected>".utf8_encode($row2->ANO_LETIVO)."</option>";
 							}
 							mysql_free_result($res2);
-							echo "</select>";
-						?>
+							?>
+						</select>
 						<input type="hidden" id="anoatual" name="ano_letivo_atual"/>
 					</div>
 				</div>
@@ -104,6 +100,7 @@
 			</div>
 		</div>
 	</form>
+
 	<div class="panel-footer clearfix">
 		<button type="submit" form="info_escola" class="btn btn-primary pull-right">
 			<span class="glyphicon glyphicon-floppy-disk"></span>
@@ -150,7 +147,6 @@ $( document ).ready(function() {
 	});
 
 	onlyNum($("#tel"));
-
 
 });
 </script>

@@ -60,9 +60,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Outra Escola</label>
-						<?php
-							echo"<input type='text' class='form-control' name='outra_escola' id='outra_escola_campo' value='".utf8_encode($row->ESCOLA)."' placeholder='Nome da Escola' />";
-						?>
+							<input type='text' class='form-control' name='outra_escola' id='outra_escola_campo' value='<?php echo utf8_encode($row->ESCOLA)?>' placeholder='Nome da Escola' />
 					</div>
 				</div>
 			</div>
@@ -71,10 +69,9 @@
 				<div class="col-md-2">
 					<div class="form-group">
 						<label>Município*</label>
-						<?php
-							echo"
-							<select class='form-control' name='municipio' required>
-							<option value=''>-selecione-</option>";
+						<select class='form-control' name='municipio' required>
+							<option value=''>-selecione-</option>
+							<?php
 							$res2=mysql_query("Select * from dbo_tab_municipios");
 							while ($row2 = mysql_fetch_object($res2)){
 								if($row2->ID_MUNICIPIO == $row->ID_MUNICIPIO){
@@ -84,9 +81,8 @@
 								}
 							}
 							mysql_free_result($res2);
-							echo"
-							</select>";
-						?>
+							?>
+						</select>
 					</div>
 				</div>
 				<div class="col-md-2">
@@ -109,28 +105,22 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Telefone</label>
-						<?php
-							echo"<input type='text' id='tel' class='form-control' name='telefone' value='".$row->TELEFONE."' placeholder='Introduza o número de telefone' />";
-						?>
+						<input type='text' id='tel' class='form-control' name='telefone' value='<?php echo $row->TELEFONE?>' placeholder='Introduza o número de telefone'/>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Email</label>
-						<?php
-							echo"<input type='email' class='form-control' name='email' value='".$row->EMAIL."' placeholder='Introduza o email' />";
-						?>
+						<input type='email' class='form-control' name='email' value='<?php echo $row->EMAIL?>' placeholder='Introduza o email'/>
 					</div>
 				</div>
 			</div>
 		</fieldset>
 		</form>
 
-
 	<blockquote style="margin-top: 10px;">
 		<p><strong>Dados do Pré-Escolar e/ou 1.º Ciclo</strong></p>
 	</blockquote>
-
 
 	<ul class="nav nav-tabs">
 		<li id="tabPre" class="active"><a id="aPre" data-toggle="tab" href="#panePre">Pré-Escolar</a></li>
@@ -183,9 +173,9 @@
 						$res = mysql_query("select * from dbo_tab_pre_escolar, dbo_tab_tipo_pre where dbo_tab_pre_escolar.ID_ESCOLA = $id_escola AND dbo_tab_tipo_pre.ID_TIPO_PRE = dbo_tab_pre_escolar.ID_TIPO_PRE");
 						$num = mysql_num_rows($res);
 						if($num>0){
-							echo"
-							<div class='row-fluid col-md-6'>
-							<table id='registos_escola_pre' class='table table-striped trHover table-bordered'>
+					?>
+					<div class='row-fluid col-md-6'>
+						<table id='registos_escola_pre' class='table table-striped trHover table-bordered'>
 							<thead>
 								<tr style='text-align: center;'>
 									<th>
@@ -199,7 +189,8 @@
 									</th>
 								</tr>
 							</thead>
-							<tbody>";
+							<tbody>
+							<?php
 							while($row2 = mysql_fetch_object($res)){
 								$del_pre_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_pre=1&id_pre=$row2->ID_PRE_ESCOLAR&id=$id_escola&tab=pre";
 								echo"
@@ -240,9 +231,7 @@
 			<div id="pane1c" class="tab-pane">
 				<div class="container-fluid">
 					<div class="row col-md-12">
-						<?php
-							echo"<form role='form' action='index.php?mod=edit_escola&add=2&id=".$id_escola."&tab=1c' id='1c' method='POST'>";
-						?>
+						<form role='form' action='index.php?mod=edit_escola&add=2&id=<?php echo $id_escola?>&tab=1c' id='1c' method='POST'>
 						<fieldset <?php echo $turnDisable; ?>>
 							<div class="col-md-2">
 								<div class="form-group">
@@ -309,64 +298,64 @@
 						$res = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL");
 						$num = mysql_num_rows($res);
 						if($num>0){
-							echo"
-								<div class='row-fluid col-md-12'>
-									<table id='registos_escola_1C' class='table table-striped trHover table-bordered'>
-										<thead>
-											<tr style='text-align: center;'>
-												<th>
-													Ano/Turma
-												</th>
-												<th>
-													Nº Alunos
-												</th>
-												<th>
-													Tipo 1º Ciclo
-												</th>
-												<th>
-													Outro Tipo/Grupo
-												</th>
-												<th>
-													Nível
-												</th>
-												<th>
-													Eliminar
-												</th>
-											</tr>
-										</thead>
-										<tbody>";
-											while($row2 = mysql_fetch_object($res)){
-												$del_ciclo_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c";
-												echo"
-													<tr>
-														<td>
-															" . utf8_encode($row2->ANO_TURMA) . "
-														</td>
-														<td>
-															" . $row2->NUM_ALUNOS . "
-														</td>
-														<td>
-															" . utf8_encode($row2->TIPO_CICLO) . "
-														</td>
-														<td>
-															" . utf8_encode($row2->OUTRO_TIPO) . "
-														</td>
-														<td>
-															" . utf8_encode($row2->NIVEL) . "
-														</td>
-														<td style='text-align: center;'>
-															<a href='$del_ciclo_onoff' class='btn btn-xs btn-danger' $turnDisable>
-																<span class='glyphicon glyphicon-trash'></span>
-																Eliminar
-															</a>
-														</td>
-													</tr>
-												";
-											}
-										echo"</tbody>
-									</table>
-								</div>
-							";
+						?>
+							<div class='row-fluid col-md-12'>
+								<table id='registos_escola_1C' class='table table-striped trHover table-bordered'>
+									<thead>
+										<tr style='text-align: center;'>
+											<th>
+												Ano/Turma
+											</th>
+											<th>
+												Nº Alunos
+											</th>
+											<th>
+												Tipo 1º Ciclo
+											</th>
+											<th>
+												Outro Tipo/Grupo
+											</th>
+											<th>
+												Nível
+											</th>
+											<th>
+												Eliminar
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+									<?php
+										while($row2 = mysql_fetch_object($res)){
+											$del_ciclo_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_ciclo=1&id_1c=$row2->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c";
+											echo"
+												<tr>
+													<td>
+														" . utf8_encode($row2->ANO_TURMA) . "
+													</td>
+													<td>
+														" . $row2->NUM_ALUNOS . "
+													</td>
+													<td>
+														" . utf8_encode($row2->TIPO_CICLO) . "
+													</td>
+													<td>
+														" . utf8_encode($row2->OUTRO_TIPO) . "
+													</td>
+													<td>
+														" . utf8_encode($row2->NIVEL) . "
+													</td>
+													<td style='text-align: center;'>
+														<a href='$del_ciclo_onoff' class='btn btn-xs btn-danger' $turnDisable>
+															<span class='glyphicon glyphicon-trash'></span>
+															Eliminar
+														</a>
+													</td>
+												</tr>
+											";
+										}
+									echo"</tbody>
+								</table>
+							</div>";
 						}else{
 							echo"
 							<div class='row-fluid col-md-12'>
@@ -374,8 +363,7 @@
 									<span class='glyphicon glyphicon-info-sign'></span>
 									Ainda não existem dados de Primeiro ciclo registados. Para registar clique em \"Adicionar\"
 								</div>
-							</div>
-							";
+							</div>";
 						}
 					?>
 				</div>

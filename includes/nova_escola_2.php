@@ -94,17 +94,13 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Telefone</label>
-						<?php
-							echo"<input type='text' class='form-control' id='tel' name='telefone' value='".$row->TELEFONE."' placeholder='Introduza o número de telefone' />";
-						?>
+						<input type='text' class='form-control' id='tel' name='telefone' value='<?php echo $row->TELEFONE?>' placeholder='Introduza o número de telefone'/>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Email</label>
-						<?php
-							echo"<input type='email' class='form-control' name='email' value='".$row->EMAIL."' placeholder='Introduza o email' />";
-						?>
+						<input type='email' class='form-control' name='email' value='<?php echo $row->EMAIL?>' placeholder='Introduza o email'/>
 					</div>
 				</div>
 			</div>
@@ -167,9 +163,9 @@
 						$res = mysql_query("select * from dbo_tab_pre_escolar, dbo_tab_tipo_pre where dbo_tab_pre_escolar.ID_ESCOLA = $id_escola AND dbo_tab_tipo_pre.ID_TIPO_PRE = dbo_tab_pre_escolar.ID_TIPO_PRE");
 						$num = mysql_num_rows($res);
 						if($num>0){
-							echo"
-							<div class='row-fluid col-md-6'>
-							<table id='registos_escola_pre' class='table table-striped trHover table-bordered'>
+					?>
+					<div class='row-fluid col-md-6'>
+						<table id='registos_escola_pre' class='table table-striped trHover table-bordered'>
 							<thead>
 								<tr style='text-align: center;'>
 									<th>
@@ -183,7 +179,8 @@
 									</th>
 								</tr>
 							</thead>
-							<tbody>";
+							<tbody>
+							<?php
 							while($row2 = mysql_fetch_object($res)){
 								echo"
 								<tr>
@@ -199,13 +196,11 @@
 											Eliminar
 										</a>
 									</td>
-								</tr>
-								";
+								</tr>";
 							}
 							echo"</tbody>
 							</table>
-							</div>
-							";
+							</div>";
 						}else{
 							echo"
 							<div class='row-fluid col-md-12'>
@@ -213,8 +208,7 @@
 									<span class='glyphicon glyphicon-info-sign'></span>
 									Ainda não existem dados de Pré-Escolar registados. Para registar clique em \"Adicionar\"
 								</div>
-							</div>
-							";
+							</div>";
 						}
 					?>
 				</div>
@@ -223,8 +217,6 @@
 			<div id="pane1c" class="tab-pane">
 				<div class="container-fluid">
 					<div class="row col-md-12">
-						<!-- <form role="form" enctype='multipart/form-data' action="index.php?mod=nova_escola_2&add=2" id="novo_registo_1c" method="POST"> -->
-
 						<form role='form' action='index.php?mod=nova_escola_2&add=2&tab=1c' id='1c' method='POST'>
 							<fieldset <?php echo $turnDisable; ?>>
 							<div class="col-md-2">
@@ -292,7 +284,7 @@
 						$res = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL");
 						$num = mysql_num_rows($res);
 						if($num>0){
-							echo"
+					?>
 								<div class='row-fluid col-md-12'>
 									<table id='registos_escola_1C' class='table table-striped trHover table-bordered'>
 										<thead>
@@ -317,7 +309,8 @@
 												</th>
 											</tr>
 										</thead>
-										<tbody>";
+										<tbody>
+										<?php
 											while($row2 = mysql_fetch_object($res)){
 												echo"
 													<tr>
@@ -342,13 +335,11 @@
 																Eliminar
 															</a>
 														</td>
-													</tr>
-												";
+													</tr>";
 											}
 										echo"</tbody>
 									</table>
-								</div>
-							";
+								</div>";
 						}else{
 							echo"
 							<div class='row-fluid col-md-12'>
@@ -356,8 +347,7 @@
 									<span class='glyphicon glyphicon-info-sign'></span>
 									Ainda não existem dados de Primeiro ciclo registados. Para registar clique em \"Adicionar\"
 								</div>
-							</div>
-							";
+							</div>";
 						}
 					?>
 				</div>
@@ -400,7 +390,6 @@ function onlyNum(id){
 $( document ).ready(function() {
 	//Obter valor da variavel 'tab' do URL
 	var tabSel = ObterValorVariavelURL("tab");
-	//alert("Valor da variavel: " + tabSel)
 
 	//Ativar o separador do Pré-escolar
 	if(tabSel == "pre"){

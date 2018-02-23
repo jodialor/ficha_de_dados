@@ -71,7 +71,8 @@ if($_GET['save']==2 && $ano_atual->ID_ANO_LETIVO > 0){
 				$ano_atual = mysql_fetch_object($res2);
 				$num = mysql_num_rows($res);
 				if($num>0){
-					echo"<div class='table-responsive'>
+			?>
+					<div class='table-responsive'>
 						<table class='table table-striped trHover'>
 							<thead>
 								<!-- MENU -->
@@ -90,7 +91,8 @@ if($_GET['save']==2 && $ano_atual->ID_ANO_LETIVO > 0){
 									</th>
 								</tr>
 							</thead>
-								<tbody>";
+								<tbody>
+								<?php
 								while($row = mysql_fetch_object($res)){
 									echo"
 										<tr>
@@ -147,9 +149,7 @@ if($_GET['save']==2 && $ano_atual->ID_ANO_LETIVO > 0){
 		</div>
 	</div>
 	<div class="panel-footer clearfix">
-	<?php
-		echo"<a class='btn btn-primary pull-right' href='index.php?mod=finish&save=1&id=". $_SESSION[id_funcionario] ."'>";
-	?>
+		<a class='btn btn-primary pull-right' href='index.php?mod=finish&save=1&id=<?php echo $_SESSION[id_funcionario]?>'>
 			<span class='glyphicon glyphicon-send' aria-hidden='true'></span>
 			Enviar
 		</a>

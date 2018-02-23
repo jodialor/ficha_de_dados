@@ -5,9 +5,6 @@ color: red;
 }
 </style>
 
-<?php
-	
-	echo"
 	<div class='panel panel-info'>
 		<div class='panel-heading'>
 			<h3 class='panel-title'><strong>DADOS PESSOAIS</strong></h3>
@@ -38,7 +35,7 @@ color: red;
 				</div>
 			</div>
 			<div class='panel-footer clearfix'>
-				<button type='submit' name='submit' class='btn btn-primary pull-right'> 	
+				<button type='submit' name='submit' class='btn btn-primary pull-right'>
 					<span class='glyphicon glyphicon-search' aria-hidden='true'></span>
 					Procurar e Continuar
 					<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>
@@ -46,8 +43,7 @@ color: red;
 			</div>
 		</form>
 	</div>
-	";
-?>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 

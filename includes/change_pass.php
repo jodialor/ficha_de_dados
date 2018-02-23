@@ -1,5 +1,5 @@
 <?php
-	
+
 	if($_GET['change']==1){
 		if($_POST['nova'] == $_POST['re_nova']){
 			$res = mysql_query("SELECT * FROM dbo_tab_funcionarios WHERE ID_FUNCIONARIO = $_SESSION[id_funcionario]");
@@ -14,8 +14,8 @@
 			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=change_pass&m=10'>";
 		}
 	}
+	?>
 	
-	echo"
 	<div class='panel panel-info'>
 		<div class='panel-heading'>
 			<h3 class='panel-title'><strong>ALTERAÇÃO DE PALAVRA-PASSE</strong></h3>
@@ -35,16 +35,14 @@
 				</div>
 			</div>
 			<div class='panel-footer clearfix'>
-				<button type='submit' name='submit' class='btn btn-primary pull-right'> 	
+				<button type='submit' name='submit' class='btn btn-primary pull-right'>
 					<span class='glyphicon glyphicon-lock' aria-hidden='true'></span>
 					Alterar
 				</button>
-				<a href='index.php?mod=pessoal_2&search=3' class='btn btn-default pull-right' style='margin-right: 10px;'> 
+				<a href='index.php?mod=pessoal_2&search=3' class='btn btn-default pull-right' style='margin-right: 10px;'>
 					<span class='glyphicon glyphicon-menu-left' aria-hidden='true'></span>
 					Voltar
 				</a>
 			</div>
 		</form>
 	</div>
-	";
-?>
