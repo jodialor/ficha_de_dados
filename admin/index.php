@@ -70,28 +70,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			//verifica se os ficheiros que estão a ser chamados existem
 			if (file_exists("includes/$mod.php")) {
 				if($mod != 'login'){
-					echo"
-					  <header class='main-header'>
-					    <a href='#' class='logo'>
-						  <!-- logo for regular state and mobile devices -->
-						  <span class='logo-lg'><b>DSEAM</b></span>
-						</a>
-						<!-- Header Navbar -->
-						<nav class='navbar navbar-static-top' role='navigation'>
-						  <!-- Navbar Right Menu -->
-						  <div class='navbar-custom-menu'>
-							<ul class='nav navbar-nav'>
-							  <!-- Control Sidebar Toggle Button -->
-							  <li>
-								<a href='logoff.php'><i class='fa fa-sign-out'></i> Sair</a>
-							  </li>
-							</ul>
-						  </div>
-						</nav>
-					  </header>
-					  <!-- Left side column. contains the logo and sidebar -->
-					  <aside class='main-sidebar'>
-
+		?>
+				  <header class='main-header'>
+				    <a href='#' class='logo'>
+					  <!-- logo for regular state and mobile devices -->
+					  <span class='logo-lg'><b>DSEAM</b></span>
+					</a>
+					<!-- Header Navbar -->
+					<nav class='navbar navbar-static-top' role='navigation'>
+					  <!-- Navbar Right Menu -->
+					  <div class='navbar-custom-menu'>
+						<ul class='nav navbar-nav'>
+						  <!-- Control Sidebar Toggle Button -->
+						  <li>
+							<a href='logoff.php'><i class='fa fa-sign-out'></i> Sair</a>
+						  </li>
+						</ul>
+					  </div>
+					</nav>
+				  </header>
+				  <!-- Left side column. contains the logo and sidebar -->
+				  <aside class='main-sidebar'>
 						<!-- sidebar: style can be found in sidebar.less -->
 						<section class='sidebar'>
 						  <!-- Sidebar Menu -->
@@ -105,14 +104,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						  </ul><!-- /.sidebar-menu -->
 						</section>
 						<!-- /.sidebar -->
-					  </aside>
+				  </aside>
 
-					  <!-- Content Wrapper. Contains page content -->
-					  <div class='content-wrapper' style='padding-bottom: 3%;'>
+				  <!-- Content Wrapper. Contains page content -->
+					<div class='content-wrapper' style='padding-bottom: 3%;'>
 						<!-- Content Header (Page header) -->
 						<section class='content-header'>
-						  <h1>";
-
+							<h1>
+							<?php
 							if($mod=='lista_func'){
 								echo"<i class='fa fa-list'></i> Lista de Funcionários";
 							}else{
@@ -156,83 +155,78 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									}
 								}
 							}
-
-						  echo "</h1>
+							?>
+							</h1>
 						</section>
 
 						<!-- Main content -->
-						<section class='content'>";
-
-							  if($mod != 'login'){
+						<section class='content'>
+						<?php
+							if($mod != 'login'){
 								echo " <body class='hold-transition skin-blue sidebar-mini'>";
-							  }else{
+							}else{
 								echo " <body>";
-							  }
+							}
 
 							if ($_GET['m'] == 1) {
 								echo "
 								<div class='alert alert-danger alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
 									<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
 									<p>Preencha todos os campos por favor.</p>
-								</div>
-								";
+								</div>";
 							}
 							if ($_GET['m'] == 2) {
 								echo "
 								<div class='alert alert-danger alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
 									<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
 									<p>O utilizador ou a palavra-passe não estão corretos.</p>
-								</div>
-								";
+								</div>";
 							}
 							if ($_GET['m'] == 3) {
 								echo "
 								<div class='alert alert-danger alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
 									<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
 									<p>A palavra-passe antiga não está correta.</p>
-								</div>
-								";
+								</div>";
 							}
 							if ($_GET['m'] == 4) {
 								echo "
 								<div class='alert alert-danger alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
 									<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
 									<p>A palavra-passe não coincide com a re-introduzida.</p>
-								</div>
-								";
+								</div>";
 							}
-						//verifica se os ficheiros que estão a ser chamados existem
-						if (file_exists("includes/$mod.php")) {
-							if($_SESSION['login'] != NULL){
-								include("includes/$mod.php");
-							}else{
-								echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php'>";
+							//verifica se os ficheiros que estão a ser chamados existem
+							if (file_exists("includes/$mod.php")) {
+								if($_SESSION['login'] != NULL){
+									include("includes/$mod.php");
+								}else{
+									echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php'>";
+								}
+							} else {
+								echo "O ficheiro nao existe.";
 							}
-						} else {
-							echo "O ficheiro nao existe.";
-						}
-
-						echo"
+						?>
 						</section><!-- /.content -->
-					  </div><!-- /.content-wrapper -->
+					</div><!-- /.content-wrapper -->
 
-					  <!-- Main Footer -->
-					  <footer class='main-footer'>
+				  <!-- Main Footer -->
+				  <footer class='main-footer'>
 						<!-- To the right -->
 						<div class='pull-right hidden-xs'>
 						  DSEAM
 						</div>
 						<!-- Default to the left -->
 						<strong>Copyright &copy; 2018 <a href='http://www.madeira-edu.pt/dseam'>DSEAM</a>.</strong> Todos os direitos reservados.
-					  </footer>
-					";
-				}else{
+				  </footer>
+			<?php
+				} else{
 					include("includes/$mod.php");
 				}
 			} else {
 				echo "O ficheiro nao existe.";
 			}
-		?>
+			?>
 	</div>
 
    <!-- jQuery 2.1.4 -->

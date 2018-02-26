@@ -79,11 +79,11 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 
 
 <!-- jQuery 2.1.4 -->
-<script src="../admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="../admin/bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="../admin/plugins/iCheck/icheck.min.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script>
 
 <script>
   $(function () {
