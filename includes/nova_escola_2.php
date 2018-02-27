@@ -10,10 +10,10 @@
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
 	if($_GET['add']==2){
-		$ano_turma = utf8_decode($_POST[ano_turma]);
+		$turma = utf8_decode($_POST[turma]);
 		$outro_tipo = utf8_decode($_POST[outro_tipo]);
 		//adicionar o 1ºciclo
-		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ANO_TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ('$ano_turma', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$outro_tipo', '$_POST[nivel]', $id_escola)");
+		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ID_ANO_ESCOLAR, TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ($_POST[ano_escolar], '$turma', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$outro_tipo', '$_POST[nivel]', $id_escola)");
 	}
 	if($_GET['del_pre']==1){
 		$res = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_PRE_ESCOLAR=$_GET[id]");
@@ -107,11 +107,9 @@
 		</fieldset>
 		</form>
 
-
 	<blockquote style="margin-top: 10px;">
 		<p><strong>Dados do Pré-Escolar e/ou 1.º Ciclo</strong></p>
 	</blockquote>
-
 
 	<ul class="nav nav-tabs">
 		<li id="tabPre" class="active"><a data-toggle="tab" href="#panePre" id="aPre" href="#panePre">Pré-Escolar</a></li>
@@ -168,15 +166,9 @@
 						<table id='registos_escola_pre' class='table table-striped trHover table-bordered'>
 							<thead>
 								<tr style='text-align: center;'>
-									<th>
-										Tipo de Pré
-									</th>
-									<th>
-										Nº Alunos
-									</th>
-									<th>
-										Eliminar
-									</th>
+									<th> Tipo de Pré </th>
+									<th> Nº Alunos </th>
+									<th> Eliminar </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -184,12 +176,8 @@
 							while($row2 = mysql_fetch_object($res)){
 								echo"
 								<tr>
-									<td>
-										" . utf8_encode($row2->TIPO_PRE) . "
-									</td>
-									<td>
-										" . $row2->NUM_ALUNOS . "
-									</td>
+									<td>" . utf8_encode($row2->TIPO_PRE) . "</td>
+									<td>" . $row2->NUM_ALUNOS . "</td>
 									<td style='text-align: center;'>
 										<a href='index.php?mod=nova_escola_2&del_pre=1&id=$row2->ID_PRE_ESCOLAR' class='btn btn-xs btn-danger'>
 											<span class='glyphicon glyphicon-trash'></span>
@@ -219,127 +207,119 @@
 					<div class="row col-md-12">
 						<form role='form' action='index.php?mod=nova_escola_2&add=2&tab=1c' id='1c' method='POST'>
 							<fieldset <?php echo $turnDisable; ?>>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label>Ano/Turma</label>
-									<input id="ano_turma" name="ano_turma" type="text" class="form-control" placeholder="Ano/Turma" required/>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Ano Escolar</label>
+										<select id="ano_esc" name="ano_escolar"class="form-control" required>
+											<option value="">- selecione -</option>
+												<?php
+													$res_anos = mysql_query("Select * from dbo_tab_anos_escolares");
+													while ($row_anos = mysql_fetch_object($res_anos)){
+														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".utf8_encode($row_anos->ANO_ESCOLAR)."</option>";
+													}
+													mysql_free_result($res_anos);
+												?>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label>Nºalunos</label>
-									<input id="num_alunos_1c" id="num_alunos_1c" name="num_alunos_1c" type="text" class="form-control" placeholder="Nº alunos" required/>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Turma</label>
+										<input id="turma" name="turma" type="text" class="form-control" placeholder="Turma" required/>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label>Tipo 1ºCiclo</label>
-									<select id="tipo_1c" name="tipo_1ciclo" class="form-control" required>
-										<option value="">- selecione -</option>
-											<?php
-												$res2=mysql_query("Select * from dbo_tab_tipo_ciclo ORDER BY TIPO_CICLO");
-												while ($row2 = mysql_fetch_object($res2)){
-													echo"<option value='$row2->ID_TIPO_CICLO'>".utf8_encode($row2->TIPO_CICLO)."</option>";
-												}
-												mysql_free_result($res);
-												mysql_free_result($res2);
-											?>
-									</select>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Nºalunos</label>
+										<input id="num_alunos_1c" id="num_alunos_1c" name="num_alunos_1c" type="text" class="form-control" placeholder="Nº alunos" required/>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label>Outro Tipo/Grupo</label>
-									<input id="outro_tipo" name="outro_tipo" type="text" class="form-control" disabled/>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Tipo 1ºCiclo</label>
+										<select id="tipo_1c" name="tipo_1ciclo" class="form-control" required>
+											<option value="">- selecione -</option>
+												<?php
+													$res2=mysql_query("Select * from dbo_tab_tipo_ciclo ORDER BY TIPO_CICLO");
+													while ($row2 = mysql_fetch_object($res2)){
+														echo"<option value='$row2->ID_TIPO_CICLO'>".utf8_encode($row2->TIPO_CICLO)."</option>";
+													}
+													mysql_free_result($res);
+													mysql_free_result($res2);
+												?>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label>Nível</label>
-									<select id="nivel" name="nivel" class="form-control" required>
-										<option value="">- selecione -</option>
-											<?php
-												$res2=mysql_query("Select * from dbo_tab_nivel");
-												while ($row2 = mysql_fetch_object($res2)){
-													echo"<option value='$row2->ID_NIVEL'>".utf8_encode($row2->NIVEL)."</option>";
-												}
-												mysql_free_result($res);
-												mysql_free_result($res2);
-											?>
-									</select>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label>Outro Tipo/Grupo</label>
+										<input id="outro_tipo" name="outro_tipo" type="text" class="form-control" disabled/>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<button type="submit" id="btn_adicionar_1c" class="btn btn-success" style="margin-top: 20%; margin-right: 0px;">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-											Adicionar
-									</button>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label>Nível</label>
+										<select id="nivel" name="nivel" class="form-control" required>
+											<option value="">- selecione -</option>
+												<?php
+													$res2=mysql_query("Select * from dbo_tab_nivel");
+													while ($row2 = mysql_fetch_object($res2)){
+														echo"<option value='$row2->ID_NIVEL'>".utf8_encode($row2->NIVEL)."</option>";
+													}
+													mysql_free_result($res);
+													mysql_free_result($res2);
+												?>
+										</select>
+									</div>
 								</div>
-							</div>
-						</fieldset>
+								<div class="col-md-2">
+									<div class="form-group">
+										<button type="submit" id="btn_adicionar_1c" class="btn btn-success" style="margin-top: 16%; margin-right: 0px;">
+											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+												Adicionar
+										</button>
+									</div>
+								</div>
+							</fieldset>
 						</form>
 					</div>
 					<?php
-						$res = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL");
+						$res = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel, dbo_tab_anos_escolares where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL AND dbo_tab_anos_escolares.ID_ANO_ESCOLAR = dbo_tab_primeiro_ciclo.ID_ANO_ESCOLAR");
 						$num = mysql_num_rows($res);
 						if($num>0){
 					?>
-								<div class='row-fluid col-md-12'>
-									<table id='registos_escola_1C' class='table table-striped trHover table-bordered'>
-										<thead>
-											<tr style='text-align: center;'>
-												<th>
-													Ano/Turma
-												</th>
-												<th>
-													Nº alunos
-												</th>
-												<th>
-													Tipo 1ºCiclo
-												</th>
-												<th>
-													Outro Tipo/Grupo
-												</th>
-												<th>
-													Nível
-												</th>
-												<th>
-													Eliminar
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-										<?php
-											while($row2 = mysql_fetch_object($res)){
-												echo"
-													<tr>
-														<td>
-															" . utf8_encode($row2->ANO_TURMA) . "
-														</td>
-														<td>
-															" . $row2->NUM_ALUNOS . "
-														</td>
-														<td>
-															" . utf8_encode($row2->TIPO_CICLO) . "
-														</td>
-														<td>
-															" . utf8_encode($row2->OUTRO_TIPO) . "
-														</td>
-														<td>
-															" . utf8_encode($row2->NIVEL) . "
-														</td>
-														<td style='text-align: center;'>
-															<a href='index.php?mod=nova_escola_2&del_ciclo=1&id=$row2->ID_PRIMEIRO_CICLO' class='btn btn-xs btn-danger'>
-																<span class='glyphicon glyphicon-trash'></span>
-																Eliminar
-															</a>
-														</td>
-													</tr>";
-											}
-										echo"</tbody>
-									</table>
-								</div>";
+							<div class='row-fluid col-md-12'>
+								<table id='registos_escola_1C' class='table table-striped trHover table-bordered'>
+									<thead>
+										<tr style='text-align: center;'>
+											<th> Ano / Turma </th>
+											<th> Nº alunos </th>
+											<th> Tipo 1ºCiclo </th>
+											<th> Outro Tipo/Grupo </th>
+											<th> Nível </th>
+											<th> Eliminar </th>
+										</tr>
+									</thead>
+									<tbody>
+									<?php
+										while($row2 = mysql_fetch_object($res)){
+											echo"<tr>
+													<td>" . utf8_encode($row2->ANO_ESCOLAR)." / ". utf8_encode($row2->TURMA) . "</td>
+													<td>" . $row2->NUM_ALUNOS . "</td>
+													<td>" . utf8_encode($row2->TIPO_CICLO) . "</td>
+													<td>" . utf8_encode($row2->OUTRO_TIPO) . "</td>
+													<td>" . utf8_encode($row2->NIVEL) . "</td>
+													<td style='text-align: center;'>
+														<a href='index.php?mod=nova_escola_2&del_ciclo=1&id=$row2->ID_PRIMEIRO_CICLO' class='btn btn-xs btn-danger'>
+															<span class='glyphicon glyphicon-trash'></span>
+															Eliminar
+														</a>
+													</td>
+												</tr>";
+										}
+									echo"</tbody>
+								</table>
+							</div>";
 						}else{
 							echo"
 							<div class='row-fluid col-md-12'>

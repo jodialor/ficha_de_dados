@@ -104,10 +104,9 @@
 							</div><br>';
 						}else{
 							$message .= '
-								<br><b>PRÉ-ESCOLAR:</b><p>Não foram enviados dados sobre o pré-escolar.</p>
-							';
+								<br><b>PRÉ-ESCOLAR:</b><p>Não foram enviados dados sobre o pré-escolar.</p>';
 						}
-						$pciclo = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL");
+						$pciclo = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel, dbo_tab_anos_escolares where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL AND dbo_tab_anos_escolares.ID_ANO_ESCOLAR = dbo_tab_primeiro_ciclo.ID_ANO_ESCOLAR");
 						$num = mysql_num_rows($pciclo);
 						if($num>0){
 							$message .='<br><b>PRIMEIRO CICLO:</b><div class="table-responsive">
@@ -115,45 +114,23 @@
 								<thead>
 									<!-- MENU -->
 									<tr>
-										<th>
-											Ano/Turma
-										</th>
-										<th style="text-align:center;">
-											Nº de Alunos
-										</th>
-										<th>
-											Tipo
-										</th>
-										<th>
-											Outro Tipo
-										</th>
-										<th>
-											Nível
-										</th>
+										<th> Ano / Turma </th>
+										<th style="text-align:center;"> Nº de Alunos </th>
+										<th> Tipo </th>
+										<th> Outro Tipo </th>
+										<th> Nível </th>
 									</tr>
 								</thead>
-								<tbody>
-							';
+								<tbody>';
 							while($row_pciclo = mysql_fetch_object($pciclo)){
 								$message .='
 								<tr>
-									<td>
-										' . utf8_encode($row_pciclo->ANO_TURMA) . '
-									</td>
-									<td style="text-align:center;">
-										' . $row_pciclo->NUM_ALUNOS . '
-									</td>
-									<td>
-										' . utf8_encode($row_pciclo->TIPO_CICLO) . '
-									</td>
-									<td>
-										' . utf8_encode($row_pciclo->OUTRO_TIPO) . '
-									</td>
-									<td>
-										' . utf8_encode($row_pciclo->NIVEL) . '
-									</td>
-								</tr>
-								';
+									<td>' . utf8_encode($row_pciclo->ANO_ESCOLAR)." / ". utf8_encode($row_pciclo->TURMA) . '</td>
+									<td style="text-align:center;">' . $row_pciclo->NUM_ALUNOS . '</td>
+									<td>' . utf8_encode($row_pciclo->TIPO_CICLO) . '</td>
+									<td>' . utf8_encode($row_pciclo->OUTRO_TIPO) . '</td>
+									<td>' . utf8_encode($row_pciclo->NIVEL) . '</td>
+								</tr>';
 							}
 							$message .=	'</tbody>
 								</table>
@@ -161,8 +138,7 @@
 						}else{
 							$message .= '
 								<br><b>PRIMEIRO CICLO:</b>
-								<p>Não foram enviados dados sobre o primeiro ciclo.</p>
-							';
+								<p>Não foram enviados dados sobre o primeiro ciclo.</p>';
 						}
 						$message .= '<hr>';
 					}

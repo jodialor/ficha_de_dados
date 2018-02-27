@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type='text' class='form-control' value='<?php echo utf8_encode($row->ANO_ESCOLAR);?>' name='ano_escolar' placeholder='Ano Escolar'>
+				<input type='text' class='form-control' value='<?php echo utf8_encode($row->ANO_ESCOLAR);?>' name='ano_escolar' id="ano_esc" placeholder='Ano Escolar'>
 		  </div>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 	<div class="row">
 	  <div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type="number" class='form-control' value='<?php echo $row->REFERENCIA;?>' name="ref_ano" placeholder='Referência numérica'>
+				<input type="number" class='form-control' value='<?php echo $row->REFERENCIA;?>' name="ref_ano" id="ref_ano_esc" placeholder='Referência numérica'>
 			</div>
 		</div>
 	</div>
@@ -39,12 +39,10 @@
 
 <script>
 	$(document).ready(function() {
-		$('#ano_atual').change( function(){
-			if( $(this).is(':checked') ){
-				$('#atual').val("1");
-			}else{
-				$('#atual').val("0");
-			}
+		$("#ano_esc").keypress(function() {
+			var text = $(this).val();
+			var num_ref = text.match(/\d/g);
+			$("#ref_ano_esc").val(num_ref);
 		});
 	});
 
