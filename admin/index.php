@@ -101,6 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<li><a href='index.php?mod=func_filter'><i class='fa fa-list'></i> <span>Filtro de Dados Profissionais</span></a></li>
 							<li><a href='index.php?mod=lista_users'><i class='fa fa-user'></i> <span>Gerir Utilizadores</span></a></li>
 							<li><a href='index.php?mod=ano_letivo'><i class='fa fa-calendar'></i> <span>Gerir Anos Letivos</span></a></li>
+							<li><a href='index.php?mod=ano_escolar'><i class='fa fa-calendar'></i> <span>Gerir Anos Escolares</span></a></li>
 						  </ul><!-- /.sidebar-menu -->
 						</section>
 						<!-- /.sidebar -->
@@ -144,6 +145,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 																}else{
 																	if($mod=='dados'){
 																		echo"<i class='fa fa-search'></i> Ficha de Dados";
+																	} else{
+																		if($mod=='ano_escolar'){
+																			echo"<i class='fa fa-graduation-cap'></i> Gestão de Ano Escolar";
+																		}else{
+																			if($mod=='reg_ano_esc'){
+																				echo"<i class='fa fa-graduation-cap'></i> Novo Ano Escolar";
+																			}
+																		}
 																	}
 																}
 															}
