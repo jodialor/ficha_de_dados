@@ -106,9 +106,12 @@
 							$message .= '
 								<br><b>PRÉ-ESCOLAR:</b><p>Não foram enviados dados sobre o pré-escolar.</p>';
 						}
-						$pciclo = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel, dbo_tab_anos_escolares where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL AND dbo_tab_anos_escolares.ID_ANO_ESCOLAR = dbo_tab_primeiro_ciclo.ID_ANO_ESCOLAR");
+						$pciclo = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL AND ID_ANO_ESCOLAR IS NULL");
 						$num = mysql_num_rows($pciclo);
-						if($num>0){
+						// query que devolve os dados do 1º ciclo ja considerando os dados da tabela "dbo_tab_anos_escolares"
+						$pciclo_new = mysql_query("select * from dbo_tab_primeiro_ciclo, dbo_tab_tipo_ciclo, dbo_tab_nivel, dbo_tab_anos_escolares where dbo_tab_primeiro_ciclo.ID_ESCOLA = $id_escola AND dbo_tab_tipo_ciclo.ID_TIPO_CICLO = dbo_tab_primeiro_ciclo.ID_TIPO_CICLO AND dbo_tab_nivel.ID_NIVEL = dbo_tab_primeiro_ciclo.ID_NIVEL AND dbo_tab_anos_escolares.ID_ANO_ESCOLAR = dbo_tab_primeiro_ciclo.ID_ANO_ESCOLAR");
+						$num_pciclo_new = mysql_num_rows($pciclo_new);
+						if($num>0  || $num_pciclo_new>0){
 							$message .='<br><b>PRIMEIRO CICLO:</b><div class="table-responsive">
 							<table class="table-striped" border="1" border-style="solid" border-color="#777777" border-width="2px" cellpadding="5px" cellspacing="0px" style="padding: 5px!important;">
 								<thead>
@@ -122,14 +125,26 @@
 									</tr>
 								</thead>
 								<tbody>';
+							// registos do 1ºciclo já existentes aquando da criaçao da tabela "dbo_tab_anos_escolares"
 							while($row_pciclo = mysql_fetch_object($pciclo)){
 								$message .='
 								<tr>
-									<td>' . utf8_encode($row_pciclo->ANO_ESCOLAR)." / ". utf8_encode($row_pciclo->TURMA) . '</td>
+									<td>' . utf8_encode($row_pciclo->TURMA) . '</td>
 									<td style="text-align:center;">' . $row_pciclo->NUM_ALUNOS . '</td>
 									<td>' . utf8_encode($row_pciclo->TIPO_CICLO) . '</td>
 									<td>' . utf8_encode($row_pciclo->OUTRO_TIPO) . '</td>
 									<td>' . utf8_encode($row_pciclo->NIVEL) . '</td>
+								</tr>';
+							}
+							// registos do 1ºciclo adicionados apos criaçao da tabela "dbo_tab_anos_escolares"
+							while($row_pciclo_new = mysql_fetch_object($pciclo_new)){
+								$message .='
+								<tr>
+									<td>' . utf8_encode($row_pciclo_new->ANO_ESCOLAR)." / ". utf8_encode($row_pciclo_new->TURMA) . '</td>
+									<td style="text-align:center;">' . $row_pciclo_new->NUM_ALUNOS . '</td>
+									<td>' . utf8_encode($row_pciclo_new->TIPO_CICLO) . '</td>
+									<td>' . utf8_encode($row_pciclo_new->OUTRO_TIPO) . '</td>
+									<td>' . utf8_encode($row_pciclo_new->NIVEL) . '</td>
 								</tr>';
 							}
 							$message .=	'</tbody>
