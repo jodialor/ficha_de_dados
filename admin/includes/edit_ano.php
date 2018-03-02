@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<?php echo "<input type='text' class='form-control' value='". utf8_encode($row->ANO_LETIVO) ."' name='ano_letivo' placeholder='Ano Letivo'>";?>
+				<input type='text' class='form-control' value='<?php echo $row->ANO_LETIVO;?>' name='ano_letivo' placeholder='Ano Letivo'>
 		  </div>
 		</div>
 	</div>

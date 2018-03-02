@@ -1,8 +1,7 @@
 <?php
 
 	if($_GET['save'] == 1){
-		$ano_letivo = utf8_decode($_POST[ano_letivo]);
-		$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$ano_letivo',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
+		$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$_POST[ano_letivo]',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
 		// Garantir que apenas pode estar selecionado um ano letivo atual
 		if ($_POST['atual']==1){
 			$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
@@ -42,7 +41,7 @@
 
 				while($row = mysql_fetch_object($res)){ ?>
 					<tr>
-						<td> <?php echo utf8_encode($row->ANO_LETIVO); ?> </td>
+						<td> <?php echo $row->ANO_LETIVO; ?> </td>
 						<td>
 							<?php
 							$isChecked = ($row->ANO_ATUAL) ? "checked" : "";

@@ -11,10 +11,8 @@
 		$new_pre = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
 	if($_GET['add']==2){
-		$turma = utf8_decode($_POST[turma]);
-		$outro_tipo = utf8_decode($_POST[outro_tipo]);
-
-		$new_pciclo = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ID_ANO_ESCOLAR, TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ($_POST[ano_escolar], '$turma', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$outro_tipo', '$_POST[nivel]', $id_escola)");
+		$new_pciclo = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ID_ANO_ESCOLAR, TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA)
+															 VALUES ($_POST[ano_escolar], '$_POST[turma]', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$_POST[outro_tipo]', '$_POST[nivel]', $id_escola)");
 	}
 	if($_GET['del_pre']==1 && $id_anoletivo == $ano_atual->ID_ANO_LETIVO){
 		$del_pre = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_PRE_ESCOLAR=$_GET[id_pre]");
@@ -222,7 +220,7 @@
 												<?php
 													$res_anos = mysql_query("Select * from dbo_tab_anos_escolares");
 													while ($row_anos = mysql_fetch_object($res_anos)){
-														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".utf8_encode($row_anos->ANO_ESCOLAR)."</option>";
+														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".$row_anos->ANO_ESCOLAR."</option>";
 													}
 													mysql_free_result($res_anos);
 												?>
@@ -315,7 +313,7 @@
 										$del_ciclo_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_ciclo=1&id_1c=$row_res_old->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c";
 										echo"
 											<tr>
-												<td>" . utf8_encode($row_res_old->TURMA) . "</td>
+												<td>" . $row_res_old->TURMA . "</td>
 												<td>" . $row_res_old->NUM_ALUNOS . "</td>
 												<td>" . utf8_encode($row_res_old->TIPO_CICLO) . "</td>
 												<td>" . utf8_encode($row_res_old->OUTRO_TIPO) . "</td>
@@ -334,7 +332,7 @@
 										$del_ciclo_onoff = ($id_anoletivo != $ano_atual->ID_ANO_LETIVO) ? "javascript:void(0)" : "index.php?mod=edit_escola&del_ciclo=1&id_1c=$row_1ciclo->ID_PRIMEIRO_CICLO&id=$id_escola&tab=1c";
 										echo"
 											<tr>
-												<td>" . utf8_encode($row_1ciclo->ANO_ESCOLAR)." / ".utf8_encode($row_1ciclo->TURMA) . "</td>
+												<td>" . $row_1ciclo->ANO_ESCOLAR." / ".$row_1ciclo->TURMA . "</td>
 												<td>" . $row_1ciclo->NUM_ALUNOS . "</td>
 												<td>" . utf8_encode($row_1ciclo->TIPO_CICLO) . "</td>
 												<td>" . utf8_encode($row_1ciclo->OUTRO_TIPO) . "</td>

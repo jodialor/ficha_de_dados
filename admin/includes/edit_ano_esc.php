@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type='text' class='form-control' value='<?php echo utf8_encode($row->ANO_ESCOLAR);?>' name='ano_escolar' id="ano_esc" placeholder='Ano Escolar'>
+				<input type='text' class='form-control' value='<?php echo $row->ANO_ESCOLAR;?>' name='ano_escolar' id="ano_esc" placeholder='Ano Escolar'>
 		  </div>
 		</div>
 	</div>

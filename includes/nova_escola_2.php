@@ -10,10 +10,9 @@
 		$res = mysql_query("INSERT INTO dbo_tab_pre_escolar(ID_TIPO_PRE, NUM_ALUNOS, ID_ESCOLA) VALUES ($_POST[tipo_pre], $_POST[num_alunos_pre], $id_escola)");
 	}
 	if($_GET['add']==2){
-		$turma = utf8_decode($_POST[turma]);
-		$outro_tipo = utf8_decode($_POST[outro_tipo]);
 		//adicionar o 1ºciclo
-		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ID_ANO_ESCOLAR, TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA) VALUES ($_POST[ano_escolar], '$turma', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$outro_tipo', '$_POST[nivel]', $id_escola)");
+		$res = mysql_query("INSERT INTO dbo_tab_primeiro_ciclo(ID_ANO_ESCOLAR, TURMA, NUM_ALUNOS, ID_TIPO_CICLO, OUTRO_TIPO, ID_NIVEL, ID_ESCOLA)
+											  VALUES ($_POST[ano_escolar], '$_POST[turma]', $_POST[num_alunos_1c], '$_POST[tipo_1ciclo]', '$_POST[outro_tipo]', '$_POST[nivel]', $id_escola)");
 	}
 	if($_GET['del_pre']==1){
 		$res = mysql_query("DELETE FROM dbo_tab_pre_escolar where ID_PRE_ESCOLAR=$_GET[id]");
@@ -215,7 +214,7 @@
 												<?php
 													$res_anos = mysql_query("Select * from dbo_tab_anos_escolares");
 													while ($row_anos = mysql_fetch_object($res_anos)){
-														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".utf8_encode($row_anos->ANO_ESCOLAR)."</option>";
+														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".$row_anos->ANO_ESCOLAR."</option>";
 													}
 													mysql_free_result($res_anos);
 												?>
@@ -304,7 +303,7 @@
 									<?php
 										while($row2 = mysql_fetch_object($res)){
 											echo"<tr>
-													<td>" . utf8_encode($row2->ANO_ESCOLAR)." / ". utf8_encode($row2->TURMA) . "</td>
+													<td>" . $row2->ANO_ESCOLAR ." / ". $row2->TURMA . "</td>
 													<td>" . $row2->NUM_ALUNOS . "</td>
 													<td>" . utf8_encode($row2->TIPO_CICLO) . "</td>
 													<td>" . utf8_encode($row2->OUTRO_TIPO) . "</td>

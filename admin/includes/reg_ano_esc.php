@@ -1,7 +1,7 @@
 <?php
 if($_GET['new']==1){
 
-	$ano_escolar = utf8_decode($_POST[ano_escolar]);
+	$ano_escolar = $_POST[ano_escolar];
 	$res = mysql_query("INSERT INTO `dbo_tab_anos_escolares`(`ANO_ESCOLAR`,`REFERENCIA`) VALUES ('$ano_escolar',$_POST[ref_ano])");
 
 	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_escolar'>";

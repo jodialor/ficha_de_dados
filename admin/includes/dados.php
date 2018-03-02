@@ -129,7 +129,7 @@
 							while($row_pciclo = mysql_fetch_object($pciclo)){
 								$message .='
 								<tr>
-									<td>' . utf8_encode($row_pciclo->TURMA) . '</td>
+									<td>' . $row_pciclo->TURMA . '</td>
 									<td style="text-align:center;">' . $row_pciclo->NUM_ALUNOS . '</td>
 									<td>' . utf8_encode($row_pciclo->TIPO_CICLO) . '</td>
 									<td>' . utf8_encode($row_pciclo->OUTRO_TIPO) . '</td>
@@ -140,7 +140,7 @@
 							while($row_pciclo_new = mysql_fetch_object($pciclo_new)){
 								$message .='
 								<tr>
-									<td>' . utf8_encode($row_pciclo_new->ANO_ESCOLAR)." / ". utf8_encode($row_pciclo_new->TURMA) . '</td>
+									<td>' . $row_pciclo_new->ANO_ESCOLAR." / ". $row_pciclo_new->TURMA . '</td>
 									<td style="text-align:center;">' . $row_pciclo_new->NUM_ALUNOS . '</td>
 									<td>' . utf8_encode($row_pciclo_new->TIPO_CICLO) . '</td>
 									<td>' . utf8_encode($row_pciclo_new->OUTRO_TIPO) . '</td>
