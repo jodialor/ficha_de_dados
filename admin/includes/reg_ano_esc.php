@@ -64,13 +64,14 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#reg_ano_esc_form').on('submit', function (e) {
-  if (e.isDefaultPrevented()) {
-    // handle the invalid form...
-  } else {
-    // everything looks good!
-  }
-})
+	// Verificar se existem erros antes de submeter o formulario
+	$("#reg_ano_esc_form").submit(function(){
+		if($("#reg_ano_esc_form .has-error").length > 0){
+			alert("Corrija os erros antes de submeter o formulário!");
+			// para evitar que o formulario seja submetido
+			return false;
+		}
+	});
 
 });
 </script>

@@ -15,7 +15,7 @@
 ?>
 <br>
 <br>
-<form class="form-inline" action='index.php?mod=edit_ano_esc&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
+<form class="form-inline" action='index.php?mod=edit_ano_esc&save=1&id=<?php echo $_GET[id]; ?>' id="edit_ano_esc_form" method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
@@ -40,7 +40,6 @@
 	</div>
 </form>
 
-
 <!-- jQuery 2.1.4 -->
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
@@ -59,6 +58,15 @@
 			}else{
 				parent.addClass("has-error");
 				parent.removeClass("has-success");
+			}
+		});
+
+		// Verificar se existem erros antes de submeter o formulario
+		$("#edit_ano_esc_form").submit(function(){
+			if($("#edit_ano_esc_form .has-error").length > 0){
+				alert("Corrija os erros antes de submeter o formulário!");
+				// para evitar que o formulario seja submetido
+				return false;
 			}
 		});
 	});

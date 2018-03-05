@@ -358,18 +358,34 @@ if($_GET['save']==1){
 $( document ).ready(function() {
 	if($('#lista').val() != 209){
 		$("#outra_escola_campo").prop('disabled', true);
+		$("#outra_escola_campo").removeAttr('required');
 	} else{
 		$("#outra_escola_campo").prop('disabled', false);
+		$("#outra_escola_campo").attr('required', 'required');
 	}
 
   $("#lista").change(function () {
 		if($('#lista').val() != 209){
 			$("#outra_escola_campo").prop('disabled', true);
+			$("#outra_escola_campo").removeAttr('required');
 			$("#outra_escola_campo").val("");
 		} else{
 			$("#outra_escola_campo").prop('disabled', false);
+			$("#outra_escola_campo").attr('required', 'required');
 		}
 		return false;
+	});
+
+	$(":input").keyup(function() {
+		var value = $(this).val();
+		var parent = $(this).parent();
+		if(value.length >= 1){
+			parent.addClass("has-success");
+			parent.removeClass("has-error");
+		}else{
+			parent.addClass("has-error");
+			parent.removeClass("has-success");
+		}
 	});
 
 	onlyNum($("#num_func"));

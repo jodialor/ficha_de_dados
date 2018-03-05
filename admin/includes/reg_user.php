@@ -17,7 +17,7 @@ if($_GET['new']==1){
 ?>
 <br>
 <br>
-<form action="index.php?mod=reg_user&new=1" method="POST">
+<form action="index.php?mod=reg_user&new=1" id="reg_user_form" method="POST">
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
@@ -77,6 +77,15 @@ $(document).ready(function() {
 		}else{
 			parent.addClass("has-error");
 			parent.removeClass("has-success");
+		}
+	});
+
+	// Verificar se existem erros antes de submeter o formulario
+	$("#reg_user_form").submit(function(){
+		if($("#reg_user_form .has-error").length > 0){
+			alert("Corrija os erros antes de submeter o formulário!");
+			// para evitar que o formulario seja submetido
+			return false;
 		}
 	});
 });

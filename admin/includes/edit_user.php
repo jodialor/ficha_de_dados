@@ -22,7 +22,7 @@ if($_GET['save']==1){
 ?>
 <br>
 <br>
-<form action='index.php?mod=edit_user&save=1&id=<?php echo $_GET[id];?>' method='POST'>
+<form action='index.php?mod=edit_user&save=1&id=<?php echo $_GET[id];?>' id="edit_user_form" method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
@@ -90,6 +90,15 @@ $(document).ready(function() {
 		}else{
 			parent.addClass("has-error");
 			parent.removeClass("has-success");
+		}
+	});
+
+	// Verificar se existem erros antes de submeter o formulario
+	$("#edit_user_form").submit(function(){
+		if($("#edit_user_form .has-error").length > 0){
+			alert("Corrija os erros antes de submeter o formulário!");
+			// para evitar que o formulario seja submetido
+			return false;
 		}
 	});
 });

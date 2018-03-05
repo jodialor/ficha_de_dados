@@ -17,7 +17,7 @@
 ?>
 <br>
 <br>
-<form class="form-inline" action='index.php?mod=edit_ano&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
+<form class="form-inline" action='index.php?mod=edit_ano&save=1&id=<?php echo $_GET[id]; ?>' id="edit_ano_form" method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
@@ -82,5 +82,15 @@
 				parent.removeClass("has-success");
 			}
 		});
+
+		// Verificar se existem erros antes de submeter o formulario
+		$("#edit_ano_form").submit(function(){
+			if($("#edit_ano_form .has-error").length > 0){
+				alert("Corrija os erros antes de submeter o formulário!");
+				// para evitar que o formulario seja submetido
+				return false;
+			}
+		});
+
 	});
 </script>

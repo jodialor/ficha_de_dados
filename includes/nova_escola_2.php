@@ -212,7 +212,7 @@
 										<select id="ano_esc" name="ano_escolar"class="form-control" required>
 											<option value="">- selecione -</option>
 												<?php
-													$res_anos = mysql_query("Select * from dbo_tab_anos_escolares");
+													$res_anos = mysql_query("Select * from dbo_tab_anos_escolares ORDER BY REFERENCIA ASC");
 													while ($row_anos = mysql_fetch_object($res_anos)){
 														echo"<option value='$row_anos->ID_ANO_ESCOLAR'>".$row_anos->ANO_ESCOLAR."</option>";
 													}
