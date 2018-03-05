@@ -397,24 +397,30 @@ $( document ).ready(function() {
 			if($('#tipo_1c').val() == 12 || $('#tipo_1c').val() == 13){
 				$("#outro_tipo").prop('disabled', false);
 				$("#outro_tipo").attr('placeholder', 'Tipo de Ciclo');
+				$("#outro_tipo").attr('required', 'required');
 			}else{
 				$("#outro_tipo").prop('disabled', true);
 				$("#outro_tipo").removeAttr('placeholder');
+				$("#outro_tipo").removeAttr('required');
+				$("#outro_tipo").val("");
 			}
 		});
 
 	if($('#lista').val() != 209){
 		$("#outra_escola_campo").prop('disabled', true);
+		$("#outra_escola_campo").removeAttr('required');
 	}else{
 		$("#outra_escola_campo").prop('disabled', false);
+		$("#outra_escola_campo").attr('required', 'required');
 	}
     $("#lista").change(function () {
 		if($('#lista').val() != 209){
 			$("#outra_escola_campo").prop('disabled', true);
+			$("#outra_escola_campo").removeAttr('required');
 			$("#outra_escola_campo").val("");
-
 		}else{
 			$("#outra_escola_campo").prop('disabled', false);
+			$("#outra_escola_campo").attr('required', 'required');
 		}
 		return false;
 	});
