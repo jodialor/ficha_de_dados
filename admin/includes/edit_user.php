@@ -22,15 +22,11 @@ if($_GET['save']==1){
 ?>
 <br>
 <br>
-<?php
-echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='POST'>";
-?>
+<form action='index.php?mod=edit_user&save=1&id=<?php echo $_GET[id];?>' method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<?php
-				echo"<input type='text' class='form-control' value='". $row->UTILIZADOR ."' name='nome' placeholder='Nome Utilizador'>";
-			?>
+			<input type='text' class='form-control' value='<?php echo $row->UTILIZADOR;?>' name='nome' placeholder='Nome Utilizador' required>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>
 		  </div>
 		</div>
@@ -38,9 +34,7 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<?php
-				echo"<input type='email' class='form-control' value='". $row->EMAIL ."' name='email' placeholder='Email Utilizador'>";
-			?>
+			<input type='email' class='form-control' value='<?php echo $row->EMAIL;?>' name='email' placeholder='Email Utilizador' required>
 			<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 		  </div>
 		</div>
@@ -48,7 +42,7 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="password" class="form-control" name="pass" placeholder="Palavra-passe antiga">
+			<input type="password" class="form-control" name="pass" placeholder="Palavra-passe antiga" required>
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
 		</div>
@@ -56,7 +50,7 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="password" class="form-control" name="pass1" placeholder="Introduza a palavra-passe">
+			<input type="password" class="form-control" name="pass1" placeholder="Introduza a palavra-passe" required>
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
 		</div>
@@ -64,7 +58,7 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="password" class="form-control" name="pass2" placeholder="Re-introduza a palavra-passe">
+			<input type="password" class="form-control" name="pass2" placeholder="Re-introduza a palavra-passe" required>
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
 		</div>
@@ -86,11 +80,17 @@ echo "<form action='index.php?mod=edit_user&save=1&id=". $_GET[id] ."' method='P
 <script src="plugins/iCheck/icheck.min.js"></script>
 
 <script>
-  $(function () {
-	$('input').iCheck({
-	  checkboxClass: 'icheckbox_square-blue',
-	  radioClass: 'iradio_square-blue',
-	  increaseArea: '20%' // optional
+$(document).ready(function() {
+	$(":input").keyup(function() {
+		var value = $(this).val();
+		var parent = $(this).parent();
+		if(value.length >= 1){
+			parent.addClass("has-success");
+			parent.removeClass("has-error");
+		}else{
+			parent.addClass("has-error");
+			parent.removeClass("has-success");
+		}
 	});
-  });
+});
 </script>

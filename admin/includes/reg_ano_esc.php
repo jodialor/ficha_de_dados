@@ -1,26 +1,29 @@
 <?php
 if($_GET['new']==1){
-
-	$ano_escolar = $_POST[ano_escolar];
-	$res = mysql_query("INSERT INTO `dbo_tab_anos_escolares`(`ANO_ESCOLAR`,`REFERENCIA`) VALUES ('$ano_escolar',$_POST[ref_ano])");
-
-	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_escolar'>";
+	if($_POST['ano_escolar'] != "" && $_POST['ref_ano'] != ""){
+		$ano_escolar = $_POST['ano_escolar'];
+		$ref_ano_esc = $_POST['ref_ano'];
+		$res = mysql_query("INSERT INTO `dbo_tab_anos_escolares`(`ANO_ESCOLAR`,`REFERENCIA`) VALUES ('$ano_escolar',$ref_ano_esc)");
+		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_escolar'>";
+	}else{
+		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=reg_ano_esc&m=1'>";
+	}
 }
 ?>
 <br>
 <br>
-<form action="index.php?mod=reg_ano_esc&new=1" method="POST">
+<form action="index.php?mod=reg_ano_esc&new=1" id="reg_ano_esc_form" method="POST">
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type="text" class="form-control" name="ano_escolar" id="ano_esc" placeholder="Ano Escolar">
+				<input type="text" class="form-control" name="ano_escolar" id="ano_esc" placeholder="Ano Escolar" >
 		  </div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type="number" class="form-control" name="ref_ano" id="ref_ano_esc" placeholder="Referência numérica do Ano Escolar">
+				<input type="number" class="form-control" name="ref_ano" id="ref_ano_esc" placeholder="Referência numérica do Ano Escolar" >
 			</div>
 		 </div>
 	</div>
@@ -43,11 +46,31 @@ if($_GET['new']==1){
 <script>
 $(document).ready(function() {
 
-	$("#ano_esc").keypress(function() {
-		var text = $(this).val();
-		var num_ref = text.match(/\d/g);
+	$("#ano_esc").keyup(function() {
+		var value = $(this).val();
+		var num_ref = value.match(/\d/g);
 		$("#ref_ano_esc").val(num_ref);
 	});
+
+	$(":input").keyup(function() {
+		var value = $(this).val();
+		var parent = $(this).parent();
+		if(value.length >= 1){
+			parent.addClass("has-success");
+			parent.removeClass("has-error");
+		}else{
+			parent.addClass("has-error");
+			parent.removeClass("has-success");
+		}
+	});
+
+	$('#reg_ano_esc_form').on('submit', function (e) {
+  if (e.isDefaultPrevented()) {
+    // handle the invalid form...
+  } else {
+    // everything looks good!
+  }
+})
 
 });
 </script>

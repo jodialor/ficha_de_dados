@@ -1,15 +1,21 @@
 <?php
 if($_GET['new']==1){
-	$atual_year = 0;
-	if (isset($_POST["ano_atual"])) {
-		$atual_year = $_POST["ano_atual"];
+	if($_POST['ano_letivo'] != ""){
+		$ano_let = $_POST['ano_letivo'];
+		$atual_year = 0;
+		if (isset($_POST["ano_atual"])) {
+			$atual_year = $_POST["ano_atual"];
+		}
+		$res = mysql_query("INSERT INTO `dbo_tab_ano_letivo`(`ANO_LETIVO`,`ANO_ATUAL`) VALUES ('$ano_let',$atual_year)");
+
+		// Garantir que apenas pode estar selecionado um ano letivo atual
+		if($atual_year == "1"){
+			$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ANO_LETIVO != $_POST[ano_letivo]");
+		}
+		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
+	}else{
+		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=reg_ano&m=1'>";
 	}
-	$res = mysql_query("INSERT INTO `dbo_tab_ano_letivo`(`ANO_LETIVO`,`ANO_ATUAL`) VALUES ('$_POST[ano_letivo]',$atual_year)");
-	// Garantir que apenas pode estar selecionado um ano letivo atual
-	if($atual_year == "1"){
-		$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ANO_LETIVO != $_POST[ano_letivo]");
-	}
-	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
 }
 ?>
 <br>
@@ -18,7 +24,7 @@ if($_GET['new']==1){
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="text" class="form-control" name="ano_letivo" placeholder="Ano Letivo">
+			<input type="text" class="form-control" name="ano_letivo" id="ano_letivo" placeholder="Ano Letivo" required>
 		  </div>
 		</div>
 	</div>
@@ -47,11 +53,17 @@ if($_GET['new']==1){
 <script src="plugins/iCheck/icheck.min.js"></script>
 
 <script>
-  $(function () {
-	$('input').iCheck({
-	  checkboxClass: 'icheckbox_square-blue',
-	  radioClass: 'iradio_square-blue',
-	  increaseArea: '20%' // optional
+$(document).ready(function() {
+	$("#ano_letivo").keyup(function() {
+		var value = $(this).val();
+		var parent = $(this).parent();
+		if(value.length >= 1){
+			parent.addClass("has-success");
+			parent.removeClass("has-error");
+		}else{
+			parent.addClass("has-error");
+			parent.removeClass("has-success");
+		}
 	});
-  });
+});
 </script>

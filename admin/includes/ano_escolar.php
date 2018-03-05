@@ -1,13 +1,4 @@
 <?php
-
-	if($_GET['save'] == 1){
-		$ano_escolar = $_POST[ano_escolar];
-		$ref = $_POST[ref_ano];
-		$res = mysql_query("UPDATE `dbo_tab_anos_escolares` SET `ANO_ESCOLAR`='$ano_escolar',`REFERENCIA`='$ref' WHERE ID_ANO_ESCOLAR = $_GET[id]");
-
-		//echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_escolar'>";
-	}
-
 	if($_GET['delete']==1){
 		$search = mysql_query("SELECT * from dbo_tab_primeiro_ciclo where ID_ANO_ESCOLAR = $_GET[id] limit 1");
 		$num_rows = mysql_num_rows($search);

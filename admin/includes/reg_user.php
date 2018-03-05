@@ -1,13 +1,17 @@
 <?php
 if($_GET['new']==1){
-	if($_POST['pass1'] == $_POST['pass2']){
-		$nome = $_POST['nome'];
-		$pass = $_POST['pass1'];
-		$email = $_POST['email'];
-		$res = mysql_query("INSERT INTO `dbo_tab_utilizadores`(`UTILIZADOR`, `PASSWORD`, `EMAIL`) VALUES ('$nome', '$pass', '$email')");
-		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_users'>";
+	if($_POST['nome'] != "" && $_POST['email'] != "" && $_POST['pass1'] != "" && $_POST['pass2'] != ""){
+		if($_POST['pass1'] == $_POST['pass2']){
+			$nome = $_POST['nome'];
+			$pass = $_POST['pass1'];
+			$email = $_POST['email'];
+			$res = mysql_query("INSERT INTO `dbo_tab_utilizadores`(`UTILIZADOR`, `PASSWORD`, `EMAIL`) VALUES ('$nome', '$pass', '$email')");
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=lista_users'>";
+		}else{
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=reg_user&m=4'>";
+		}
 	}else{
-		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=reg_user&m=4'>";
+		echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=reg_user&m=1'>";
 	}
 }
 ?>
@@ -17,7 +21,7 @@ if($_GET['new']==1){
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="text" class="form-control" name="nome" placeholder="Nome Utilizador">
+			<input type="text" class="form-control" name="nome" id="nome_user" placeholder="Nome Utilizador" required>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>
 		  </div>
 		</div>
@@ -25,7 +29,7 @@ if($_GET['new']==1){
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="email" class="form-control" name="email" placeholder="Email Utilizador">
+			<input type="email" class="form-control" name="email" id="email_user" placeholder="Email Utilizador" required>
 			<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 		  </div>
 		</div>
@@ -33,7 +37,7 @@ if($_GET['new']==1){
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="password" class="form-control" name="pass1" placeholder="Palavra-passe">
+			<input type="password" class="form-control" name="pass1" id="pass1" placeholder="Palavra-passe" required>
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
 		</div>
@@ -41,7 +45,7 @@ if($_GET['new']==1){
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-			<input type="password" class="form-control" name="pass2" placeholder="Re-introduza a palavra-passe">
+			<input type="password" class="form-control" name="pass2" id="pass2" placeholder="Re-introduza a palavra-passe" required>
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
 		</div>
@@ -63,11 +67,17 @@ if($_GET['new']==1){
 <script src="plugins/iCheck/icheck.min.js"></script>
 
 <script>
-  $(function () {
-	$('input').iCheck({
-	  checkboxClass: 'icheckbox_square-blue',
-	  radioClass: 'iradio_square-blue',
-	  increaseArea: '20%' // optional
+$(document).ready(function() {
+	$(":input").keyup(function() {
+		var value = $(this).val();
+		var parent = $(this).parent();
+		if(value.length >= 1){
+			parent.addClass("has-success");
+			parent.removeClass("has-error");
+		}else{
+			parent.addClass("has-error");
+			parent.removeClass("has-success");
+		}
 	});
-  });
+});
 </script>

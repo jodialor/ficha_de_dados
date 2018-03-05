@@ -1,14 +1,27 @@
 <?php
 	$res = mysql_query("SELECT * FROM dbo_tab_ano_letivo WHERE ID_ANO_LETIVO = $_GET[id]");
 	$row = mysql_fetch_object($res);
+
+	if($_GET['save'] == 1){
+		if($_POST['ano_letivo'] != ""){
+			$res = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_LETIVO`='$_POST[ano_letivo]',`ANO_ATUAL`='$_POST[atual]' WHERE ID_ANO_LETIVO = $_GET[id]");
+			// Garantir que apenas pode estar selecionado um ano letivo atual
+			if ($_POST['atual']==1){
+				$res1 = mysql_query("UPDATE `dbo_tab_ano_letivo` SET `ANO_ATUAL`='0' WHERE ID_ANO_LETIVO != $_GET[id]");
+			}
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=ano_letivo'>";
+		}else{
+			echo "<meta HTTP-EQUIV='REFRESH' content='0; url=index.php?mod=edit_ano&m=1&id=".$_GET[id]."'>";
+		}
+	}
 ?>
 <br>
 <br>
-<form class="form-inline" action='index.php?mod=ano_letivo&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
+<form class="form-inline" action='index.php?mod=edit_ano&save=1&id=<?php echo $_GET[id]; ?>' method='POST'>
 	<div class="row">
 		<div class="col-xs-4">
 		  <div class="form-group has-feedback">
-				<input type='text' class='form-control' value='<?php echo $row->ANO_LETIVO;?>' name='ano_letivo' placeholder='Ano Letivo'>
+				<input type='text' class='form-control' value='<?php echo $row->ANO_LETIVO;?>' name='ano_letivo' id='ano_letivo' placeholder='Ano Letivo' required>
 		  </div>
 		</div>
 	</div>
@@ -28,7 +41,7 @@
 	<br>
 	<div class="row">
 	  <div class="col-xs-2">
-		<button type="submit" class="btn btn-primary btn-block btn-flat"><i class="fa fa-calendar-plus-o"></i> Guardar</button>
+		<button type="submit" class="btn btn-primary btn-block btn-flat"><i class="fa fa-floppy-o"></i> Guardar</button>
 	  </div>
 	  <a href="index.php?mod=ano_letivo" type="button" class="btn btn-default btn-flat"><i class="fa fa-chevron-left"></i> Voltar</a>
 	</div>
@@ -57,15 +70,17 @@
 				$('#atual').val("0");
 			}
 		});
-	});
 
-  $(function () {
-		$('input').iCheck({
-		  checkboxClass: 'icheckbox_square-blue',
-		  radioClass: 'iradio_square-blue',
-		  increaseArea: '20%' // optional
+		$("#ano_letivo").keyup(function() {
+			var value = $(this).val();
+			var parent = $(this).parent();
+			if(value.length >= 1){
+				parent.addClass("has-success");
+				parent.removeClass("has-error");
+			}else{
+				parent.addClass("has-error");
+				parent.removeClass("has-success");
+			}
 		});
-  });
-
-
+	});
 </script>
