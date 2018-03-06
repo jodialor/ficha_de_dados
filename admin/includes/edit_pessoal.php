@@ -3,6 +3,13 @@ if($_GET['search']==1){
 	$res = mysql_query("select * from dbo_tab_funcionarios where ID_FUNCIONARIO = $_GET[id]");
 	$row = mysql_fetch_object($res);
 	$_SESSION[id] = $_GET[id];
+	if(!isset($row->NIF)){
+		echo "
+		<div class='alert alert-warning alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
+			<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
+			<p>O funcionário atual não tem o NIF definido.</p>
+		</div>";
+	}
 }
 
 if($_GET['save']==1){

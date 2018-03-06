@@ -7,6 +7,13 @@
 			function mostrar_dados(){
 				$res = mysql_query("select * from dbo_tab_funcionarios where ID_FUNCIONARIO = $_GET[id]");
 				$row = mysql_fetch_object($res);
+				if(!isset($row->NIF)){
+					echo "
+					<div class='alert alert-warning alert-dismissible fade in' style='margin-bottom: 10px;'  role='alert'>
+						<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>x</span></button>
+						<p>O funcionário atual não tem o NIF definido.</p>
+					</div>";
+				}
 
 				$emails = mysql_query("select EMAIL from dbo_tab_utilizadores where EMAIL_COMPLETO = 1");
 				while($row2 = mysql_fetch_object($emails)){
@@ -44,6 +51,7 @@
 				$message .= '<b>Início de Funções: </b>' . $INICIO_FUNCOES . '<br>';
 				$message .= '<b>Telefone: </b>' . $row->TEL . '<br>';
 				$message .= '<b>Telemovel: </b>' . $row->TLM . '<br>';
+				$message .= '<b>Email: </b>' . $row->EMAIL . '<br>';
 				$myDateTimea = DateTime::createFromFormat('Y-m-d', $row->DATA_NASC);
 				$DATA_NASC = $myDateTimea->format('d-m-Y');
 				$message .= '<b>Data de Nascimento: </b>' . $DATA_NASC . '<br>';
